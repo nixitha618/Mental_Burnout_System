@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple RAG Test</title>
+</head>
+<body>
+    <h1>RAG Test</h1>
+    <input type="text" id="query" value="How to reduce stress?" style="width: 300px;">
+    <button onclick="test()">Test</button>
+    <pre id="result"></pre>
+    
+    <script>
+        async function test() {
+            const query = document.getElementById('query').value;
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = 'Loading...';
+            
+            try {
+                const response = await fetch('http://localhost:8000/api/v1/guidance', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: query, context: {} })
+                });
+                const data = await response.json();
+                resultDiv.textContent = JSON.stringify(data, null, 2);
+            } catch (err) {
+                resultDiv.textContent = 'Error: ' + err.message;
+            }
+        }
+    </script>
+</body>
+</html>

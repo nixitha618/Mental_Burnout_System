@@ -1,0 +1,4 @@
+I am feeling stressed and tired. | stress | 40
+I am feeling stressed and tired. I am feeling stressed and tired. | stress | 40
+I am feeling stressed and tired. | stress | 40
+How are you? | neutral | 10

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up — MindGuard AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{--bg:#07070f;--card:#10101a;--card2:#16161f;--border:rgba(255,255,255,0.07);--accent:#7c5cfc;--accent2:#00e5c3;--text:#eeeef8;--muted:#5e5e80;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;}
+
+    /* ── LEFT ── */
+    .left{flex:1;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:4rem;overflow:hidden;}
+    .left::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 40%,rgba(124,92,252,0.12) 0%,transparent 65%),radial-gradient(ellipse at 70% 70%,rgba(0,229,195,0.08) 0%,transparent 60%);pointer-events:none;}
+    .left-content{position:relative;z-index:1;text-align:center;max-width:400px;}
+    .blob{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;opacity:0.15;}
+    .blob1{width:220px;height:220px;background:var(--accent);top:-60px;left:-60px;}
+    .blob2{width:180px;height:180px;background:var(--accent2);bottom:-40px;right:-40px;}
+
+    .logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.6rem;display:flex;align-items:center;justify-content:center;gap:0.6rem;margin-bottom:3rem;text-decoration:none;color:var(--text);}
+    .logo-box{width:38px;height:38px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:10px;display:flex;align-items:center;justify-content:center;}
+    .logo em{color:var(--accent2);font-style:normal;}
+
+    .fun-badge{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(0,229,195,0.1);border:1px solid rgba(0,229,195,0.2);color:var(--accent2);font-size:0.75rem;font-weight:500;padding:0.3rem 0.75rem;border-radius:20px;margin-bottom:1.2rem;letter-spacing:0.04em;}
+    .fun-badge .dot{animation:pulse-dot 1.5s ease-in-out infinite;}
+    @keyframes pulse-dot{0%,100%{opacity:1;}50%{opacity:0.3;}}
+
+    .left-content h2{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;margin-bottom:0.6rem;line-height:1.25;}
+    .left-content h2 .hi{color:var(--accent2);}
+    .left-content h2 .grad{background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .left-content .sub{color:var(--muted);font-size:0.88rem;margin-bottom:2.2rem;line-height:1.65;}
+    .left-content .sub strong{color:var(--text);}
+
+    .stat-row{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:2rem;}
+    .stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:0.85rem 1rem;text-align:left;}
+    .stat-card .s-num{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:var(--accent2);}
+    .stat-card .s-label{font-size:0.72rem;color:var(--muted);margin-top:0.1rem;}
+
+    .checklist{text-align:left;display:flex;flex-direction:column;gap:0.55rem;}
+    .chk{display:flex;align-items:center;gap:0.65rem;color:var(--muted);font-size:0.85rem;}
+    .chk i{color:var(--accent2);font-size:0.8rem;}
+    .chk strong{color:var(--text);font-weight:500;}
+
+    /* ── RIGHT ── */
+    .right{width:500px;display:flex;flex-direction:column;justify-content:center;padding:3rem 3.5rem;background:var(--card);border-left:1px solid var(--border);}
+    .form-head{margin-bottom:1.75rem;}
+    .form-head h1{font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:700;margin-bottom:0.4rem;}
+    .form-head p{color:var(--muted);font-size:0.875rem;}
+    .form-head p a{color:var(--accent);text-decoration:none;}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:0.875rem;}
+    .field{margin-bottom:1rem;}
+    .field label{display:block;font-size:0.8rem;color:var(--muted);margin-bottom:0.4rem;}
+    .inp-wrap{position:relative;}
+    .inp-wrap i.icon{position:absolute;left:0.9rem;top:50%;transform:translateY(-50%);color:var(--muted);transition:color 0.2s;}
+    .inp-wrap input{width:100%;padding:0.8rem 0.9rem 0.8rem 2.6rem;background:var(--card2);border:1px solid var(--border);border-radius:9px;color:var(--text);outline:none;transition:border-color 0.2s;}
+    .inp-wrap input:focus{border-color:var(--accent2);}
+    .inp-wrap input.has-eye{padding-right:2.5rem;}
+    .inp-wrap input.input-ok{border-color:rgba(0,229,195,0.5);}
+    .inp-wrap input.input-err{border-color:rgba(255,107,107,0.6);}
+    .inp-wrap input.input-warn{border-color:rgba(255,197,66,0.5);}
+
+    /* Email hint strip */
+    .email-hint{display:none;align-items:center;gap:0.45rem;font-size:0.75rem;margin-top:0.42rem;padding:0.45rem 0.7rem;border-radius:7px;border:1px solid transparent;line-height:1.4;}
+    .email-hint.show{display:flex;}
+    .email-hint.warn{background:rgba(255,197,66,0.08);border-color:rgba(255,197,66,0.25);color:#ffc542;}
+    .email-hint.err{background:rgba(255,107,107,0.08);border-color:rgba(255,107,107,0.25);color:#ff6b6b;}
+    .email-hint.ok{background:rgba(0,229,195,0.08);border-color:rgba(0,229,195,0.25);color:var(--accent2);}
+
+    /* Typo suggestion */
+    .email-suggest{display:none;font-size:0.75rem;color:var(--muted);margin-top:0.3rem;}
+    .email-suggest.show{display:block;}
+    .email-suggest button{background:none;border:none;color:var(--accent);cursor:pointer;font-size:0.75rem;font-family:inherit;padding:0;text-decoration:underline;}
+
+    /* Strength */
+    .str-bar{height:3px;border-radius:2px;background:var(--border);margin-top:0.45rem;overflow:hidden;}
+    .str-fill{height:100%;width:0%;transition:width 0.3s;}
+    .str-meta{display:flex;justify-content:space-between;align-items:center;margin-top:0.35rem;}
+    .str-label{font-size:0.75rem;color:var(--muted);transition:color 0.3s;}
+
+    /* Criteria */
+    .criteria{display:none;flex-direction:column;gap:0.3rem;margin-top:0.55rem;padding:0.6rem 0.8rem;background:var(--card2);border:1px solid var(--border);border-radius:8px;}
+    .criteria.visible{display:flex;}
+    .crit{display:flex;align-items:center;gap:0.5rem;font-size:0.76rem;color:var(--muted);transition:color 0.3s;}
+    .crit i{font-size:0.7rem;width:12px;text-align:center;transition:color 0.3s;}
+    .crit.met{color:#00e5c3;}.crit.met i{color:#00e5c3;}
+
+    /* Suggest */
+    .suggest-row{display:flex;justify-content:flex-end;}
+    .suggest-btn{background:none;border:none;color:var(--accent);font-size:0.76rem;cursor:pointer;font-family:inherit;padding:0;display:flex;align-items:center;gap:0.3rem;opacity:0.85;transition:opacity 0.2s;}
+    .suggest-btn:hover{opacity:1;}
+    .suggestion-box{display:none;margin-top:0.5rem;padding:0.55rem 0.75rem;background:var(--card2);border:1px solid rgba(124,92,252,0.35);border-radius:8px;align-items:center;justify-content:space-between;gap:0.5rem;}
+    .suggestion-box.visible{display:flex;}
+    .sug-pass{font-family:monospace;font-size:0.82rem;color:var(--accent2);letter-spacing:0.04em;word-break:break-all;}
+    .sug-actions{display:flex;gap:0.45rem;flex-shrink:0;}
+    .sug-use{background:var(--accent);border:none;color:#fff;font-size:0.73rem;font-family:inherit;padding:0.3rem 0.65rem;border-radius:6px;cursor:pointer;white-space:nowrap;}
+    .sug-new{background:none;border:1px solid var(--border);color:var(--muted);font-size:0.73rem;font-family:inherit;padding:0.3rem 0.55rem;border-radius:6px;cursor:pointer;}
+    .sug-new:hover{border-color:var(--muted);}
+
+    .eye-btn{position:absolute;right:0.9rem;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;padding:0;font-size:0.85rem;line-height:1;}
+    .submit-btn{width:100%;padding:0.875rem;background:linear-gradient(135deg,var(--accent2),#00b89a);border:none;border-radius:9px;color:#07070f;font-weight:700;cursor:pointer;margin-top:0.5rem;font-family:inherit;font-size:1rem;}
+    .terms{font-size:0.76rem;color:var(--muted);text-align:center;margin-top:0.875rem;}
+    .terms a{color:var(--accent);text-decoration:none;}
+    .bottom-link{text-align:center;margin-top:1.25rem;color:var(--muted);font-size:0.82rem;}
+    .bottom-link a{color:var(--accent);text-decoration:none;}
+    .err-box{background:rgba(255,107,107,0.08);border:1px solid rgba(255,107,107,0.25);color:#ff6b6b;padding:0.7rem 0.9rem;border-radius:8px;margin-bottom:1rem;display:none;align-items:center;gap:0.5rem;}
+    .ok-box{background:rgba(0,229,195,0.08);border:1px solid rgba(0,229,195,0.25);color:var(--accent2);padding:0.7rem 0.9rem;border-radius:8px;margin-bottom:1rem;display:none;align-items:center;gap:0.5rem;}
+
+    @media(max-width:860px){.left{display:none;}.right{width:100%;padding:2rem 1.5rem;}.form-row{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+
+<div class="left">
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+  <div class="left-content">
+    <a class="logo" href="../index.html"><div class="logo-box">🧠</div>Mind<em>Guard</em> AI</a>
+
+    <div class="fun-badge"><span class="dot">●</span> 12,400+ minds protected this week</div>
+
+    <h2>
+      Hey there! 👋<br>
+      Your <span class="grad">mental glow-up</span><br>
+      starts <span class="hi">right here.</span>
+    </h2>
+
+    <p class="sub">
+      Burnout is <strong>sneaky</strong> — but we're sneakier. 🕵️<br>
+      Join thousands who caught it <strong>before</strong> it caught them.
+    </p>
+
+    <div class="stat-row">
+      <div class="stat-card"><div class="s-num">2 min</div><div class="s-label">⚡ First assessment</div></div>
+      <div class="stat-card"><div class="s-num">94%</div><div class="s-label">😌 Feel less stressed</div></div>
+      <div class="stat-card"><div class="s-num">Free</div><div class="s-label">🎉 Always &amp; forever</div></div>
+      <div class="stat-card"><div class="s-num">AI</div><div class="s-label">🤖 Powered guidance</div></div>
+    </div>
+
+    <div class="checklist">
+      <div class="chk"><i class="fas fa-check-circle"></i><span><strong>Free</strong> burnout risk assessment — no credit card</span></div>
+      <div class="chk"><i class="fas fa-check-circle"></i><span><strong>Personalized</strong> AI wellness nudges, just for you</span></div>
+      <div class="chk"><i class="fas fa-check-circle"></i><span><strong>Weekly</strong> email digests that actually help</span></div>
+      <div class="chk"><i class="fas fa-check-circle"></i><span><strong>Track</strong> your mood like a boss 📈</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="right">
+  <div class="form-head">
+    <h1>Create account ✨</h1>
+    <p>Already have an account? <a href="login.html">Sign in</a></p>
+  </div>
+
+  <div class="err-box" id="errBox"><i class="fas fa-exclamation-circle"></i><span id="errText"></span></div>
+  <div class="ok-box"  id="okBox"><i class="fas fa-check-circle"></i> Account created! Redirecting to dashboard...</div>
+
+  <form id="signupForm" novalidate>
+    <div class="form-row">
+      <div class="field"><label>First Name</label><div class="inp-wrap"><i class="icon fas fa-user"></i><input type="text" id="fname" placeholder="John" required/></div></div>
+      <div class="field"><label>Last Name</label><div class="inp-wrap"><i class="icon fas fa-user"></i><input type="text" id="lname" placeholder="Doe" required/></div></div>
+    </div>
+
+    <!-- Email -->
+    <div class="field">
+      <label>Email Address</label>
+      <div class="inp-wrap">
+        <i class="icon fas fa-envelope"></i>
+        <input type="email" id="email" placeholder="you@example.com" required
+          oninput="validateEmail(this.value)" onblur="validateEmailStrict(this.value)"/>
+      </div>
+      <div class="email-hint" id="emailHint"><i id="emailHintIcon" class="fas fa-info-circle"></i><span id="emailHintText"></span></div>
+      <div class="email-suggest" id="emailSuggest">Did you mean <button type="button" onclick="applyEmailSuggest()"><span id="suggestEmail"></span></button>?</div>
+    </div>
+
+    <!-- Password -->
+    <div class="field">
+      <label>Password</label>
+      <div class="inp-wrap">
+        <i class="icon fas fa-lock"></i>
+        <input type="password" id="pass" class="has-eye" placeholder="Create a strong password" required
+          oninput="onPassInput(this.value)" onfocus="showCriteria()" onblur="hideCriteria()"/>
+        <button type="button" class="eye-btn" id="eyeBtn" onclick="toggleEye('pass','eyeBtn')"><i class="fas fa-eye"></i></button>
+      </div>
+      <div class="str-bar"><div class="str-fill" id="strFill"></div></div>
+      <div class="str-meta">
+        <span class="str-label" id="strLabel"></span>
+        <div class="suggest-row"><button type="button" class="suggest-btn" onclick="generateSuggestion()"><i class="fas fa-magic"></i> Suggest strong password</button></div>
+      </div>
+      <div class="criteria" id="criteria">
+        <div class="crit unmet" id="crit-len"><i class="fas fa-circle"></i> At least 8 characters</div>
+        <div class="crit unmet" id="crit-upper"><i class="fas fa-circle"></i> Uppercase letter (A–Z)</div>
+        <div class="crit unmet" id="crit-num"><i class="fas fa-circle"></i> Number (0–9)</div>
+        <div class="crit unmet" id="crit-sym"><i class="fas fa-circle"></i> Special character (!@#$…)</div>
+      </div>
+      <div class="suggestion-box" id="sugBox">
+        <span class="sug-pass" id="sugPass"></span>
+        <div class="sug-actions">
+          <button type="button" class="sug-use" onclick="useSuggestion()">Use this</button>
+          <button type="button" class="sug-new" onclick="generateSuggestion()"><i class="fas fa-redo-alt"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confirm Password -->
+    <div class="field">
+      <label>Confirm Password</label>
+      <div class="inp-wrap">
+        <i class="icon fas fa-lock"></i>
+        <input type="password" id="pass2" class="has-eye" placeholder="Repeat your password" required oninput="checkMatch()"/>
+        <button type="button" class="eye-btn" id="eyeBtn2" onclick="toggleEye('pass2','eyeBtn2')"><i class="fas fa-eye"></i></button>
+      </div>
+      <div class="str-meta" style="margin-top:0.35rem;"><span class="str-label" id="matchLabel"></span></div>
+    </div>
+
+    <button type="submit" class="submit-btn"><i class="fas fa-rocket"></i> Create My Account</button>
+  </form>
+  <p class="terms">By signing up you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</p>
+  <div class="bottom-link">Already a member? <a href="login.html">Sign in →</a></div>
+</div>
+
+<script>
+/* ── Eye toggle ── */
+function toggleEye(inputId,btnId){
+  const inp=document.getElementById(inputId);
+  const btn=document.getElementById(btnId).querySelector('i');
+  if(inp.type==='password'){inp.type='text';btn.className='fas fa-eye-slash';}
+  else{inp.type='password';btn.className='fas fa-eye';}
+}
+
+/* ══ EMAIL VALIDATION ══ */
+const TYPOS={'gmial.com':'gmail.com','gmaill.com':'gmail.com','gamil.com':'gmail.com','gnail.com':'gmail.com','yaho.com':'yahoo.com','yahooo.com':'yahoo.com','yhoo.com':'yahoo.com','outlok.com':'outlook.com','outllok.com':'outlook.com','hotmial.com':'hotmail.com','hotmal.com':'hotmail.com','iclod.com':'icloud.com'};
+let suggestedEmailFull='';
+
+function setEmailInput(cls){
+  const inp=document.getElementById('email');
+  inp.className=cls||'';
+}
+function showEmailHint(type,msg){
+  const h=document.getElementById('emailHint');
+  const t=document.getElementById('emailHintText');
+  const ico=document.getElementById('emailHintIcon');
+  h.className='email-hint show '+type;
+  t.textContent=msg;
+  ico.className=type==='ok'?'fas fa-check-circle':type==='warn'?'fas fa-exclamation-triangle':'fas fa-times-circle';
+  setEmailInput(type==='ok'?'input-ok':type==='err'?'input-err':'input-warn');
+}
+function hideEmailHint(){
+  document.getElementById('emailHint').className='email-hint';
+  document.getElementById('emailSuggest').className='email-suggest';
+  setEmailInput('');
+}
+
+function validateEmail(val){
+  document.getElementById('emailSuggest').className='email-suggest';
+  if(!val){hideEmailHint();return;}
+
+  if(!val.includes('@')){
+    showEmailHint('err','Missing "@" — every email needs one (e.g. you@example.com)');return;
+  }
+  if((val.match(/@/g)||[]).length>1){
+    showEmailHint('err','Only one "@" allowed in an email address.');return;
+  }
+  const[local,domain]=val.split('@');
+  if(!local){
+    showEmailHint('err','Add your name or alias before the "@" (e.g. yourname@…)');return;
+  }
+  if(!domain){
+    showEmailHint('warn','Almost there! Add your provider after "@" (e.g. @gmail.com)');return;
+  }
+  if(!domain.includes('.')){
+    showEmailHint('warn','Domain needs a dot — like @gmail.com or @company.org');return;
+  }
+  const tld=domain.split('.').pop();
+  if(tld.length<2){
+    showEmailHint('warn','The part after the last "." is too short (needs at least 2 letters, e.g. .com)');return;
+  }
+  if(TYPOS[domain]){
+    const fixed=local+'@'+TYPOS[domain];
+    suggestedEmailFull=fixed;
+    document.getElementById('suggestEmail').textContent=fixed;
+    document.getElementById('emailSuggest').className='email-suggest show';
+    showEmailHint('warn','Looks like a typo — check the suggestion below!');return;
+  }
+  showEmailHint('ok','Looks great — valid email address!');
+}
+
+function validateEmailStrict(val){
+  if(!val){hideEmailHint();return;}
+  const re=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  if(!re.test(val)) showEmailHint('err','This doesn\'t look like a valid email. Try: yourname@example.com');
+}
+function applyEmailSuggest(){
+  document.getElementById('email').value=suggestedEmailFull;
+  document.getElementById('emailSuggest').className='email-suggest';
+  validateEmail(suggestedEmailFull);
+}
+
+/* ══ PASSWORD STRENGTH ══ */
+function scorePass(p){
+  let s=0;
+  const c={len:p.length>=8,upper:/[A-Z]/.test(p),num:/[0-9]/.test(p),sym:/[^A-Za-z0-9]/.test(p)};
+  Object.values(c).forEach(v=>v&&s++);
+  return{score:s,checks:c};
+}
+const STR_META=[
+  {label:'',color:'transparent',width:'0%'},
+  {label:'Weak',color:'#ff6b6b',width:'25%'},
+  {label:'Fair',color:'#ffc542',width:'50%'},
+  {label:'Good',color:'#7c5cfc',width:'75%'},
+  {label:'Strong',color:'#00e5c3',width:'100%'}
+];
+function onPassInput(p){
+  const{score,checks}=scorePass(p);
+  const m=STR_META[score];
+  const fill=document.getElementById('strFill');
+  fill.style.width=m.width;fill.style.background=m.color;
+  const lbl=document.getElementById('strLabel');
+  lbl.textContent=p.length?m.label:'';lbl.style.color=m.color;
+  setCrit('crit-len',checks.len);setCrit('crit-upper',checks.upper);
+  setCrit('crit-num',checks.num);setCrit('crit-sym',checks.sym);
+  if(document.getElementById('pass2').value) checkMatch();
+}
+function setCrit(id,met){
+  const el=document.getElementById(id);
+  el.className='crit '+(met?'met':'unmet');
+  el.querySelector('i').className=met?'fas fa-check-circle':'fas fa-circle';
+}
+let criteriaVisible=false;
+function showCriteria(){criteriaVisible=true;document.getElementById('criteria').classList.add('visible');}
+function hideCriteria(){setTimeout(()=>{criteriaVisible=false;document.getElementById('criteria').classList.remove('visible');},150);}
+
+function checkMatch(){
+  const p=document.getElementById('pass').value,p2=document.getElementById('pass2').value;
+  const lbl=document.getElementById('matchLabel');
+  if(!p2){lbl.textContent='';return;}
+  if(p===p2){lbl.textContent='✓ Passwords match';lbl.style.color='#00e5c3';}
+  else{lbl.textContent='✗ Passwords do not match';lbl.style.color='#ff6b6b';}
+}
+
+/* ── Password suggester ── */
+const ADJ=['Swift','Brave','Calm','Bold','Wise','Sharp','Vivid','Lush','Chill','Zenith'];
+const NOUNS=['Panda','River','Storm','Cedar','Falcon','Ember','Lotus','Comet','Lagoon','Prism'];
+const SYMS=['!','@','#','$','&','*'];
+function generateSuggestion(){
+  const pwd=ADJ[Math.floor(Math.random()*ADJ.length)]+NOUNS[Math.floor(Math.random()*NOUNS.length)]+(Math.floor(10+Math.random()*90))+SYMS[Math.floor(Math.random()*SYMS.length)];
+  document.getElementById('sugPass').textContent=pwd;
+  document.getElementById('sugBox').classList.add('visible');
+}
+function useSuggestion(){
+  const pwd=document.getElementById('sugPass').textContent;
+  const inp=document.getElementById('pass');
+  inp.type='text';
+  document.getElementById('eyeBtn').querySelector('i').className='fas fa-eye-slash';
+  inp.value=pwd;onPassInput(pwd);
+  document.getElementById('sugBox').classList.remove('visible');
+  document.getElementById('criteria').classList.add('visible');
+}
+
+
+/* ── Submit ── */
+const API_BASE = "http://localhost:8000";
+
+/* ================= SIGNUP SUBMIT ================= */
+document.getElementById('signupForm').addEventListener('submit', async function(e){
+  e.preventDefault();
+
+  const fn = document.getElementById('fname').value.trim();
+  const ln = document.getElementById('lname').value.trim();
+  const em = document.getElementById('email').value.trim();
+  const p  = document.getElementById('pass').value;
+  const p2 = document.getElementById('pass2').value;
+
+  if(p !== p2){
+    document.getElementById('errText').innerText = "Passwords do not match";
+    document.getElementById('errBox').style.display = 'flex';
+    return;
+  }
+
+  try{
+    const resp = await fetch(`${API_BASE}/api/v1/auth/signup`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        email: em,
+        password: p,
+        name: fn + " " + ln
+      })
+    });
+
+    const data = await resp.json();
+
+    if(!resp.ok){
+      document.getElementById('errText').innerText = data.detail || "Signup failed";
+      document.getElementById('errBox').style.display = 'flex';
+      return
+    }
+
+    document.getElementById('okBox').style.display = 'flex';
+
+    setTimeout(()=>{
+      window.location.href = "dashboard.html";
+    },1200);
+
+  }catch(err){
+    document.getElementById('errText').innerText = "Server error";
+    document.getElementById('errBox').style.display = 'flex';
+  }
+});
+
+</script>
+</body>
+</html>

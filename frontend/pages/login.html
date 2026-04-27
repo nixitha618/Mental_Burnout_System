@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign In — MindGuard AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{--bg:#07070f;--card:#10101a;--card2:#16161f;--border:rgba(255,255,255,0.07);--accent:#7c5cfc;--accent2:#00e5c3;--text:#eeeef8;--muted:#5e5e80;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;}
+
+    /* LEFT */
+    .left{flex:1;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:4rem;overflow:hidden;}
+    .left::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 40%,rgba(124,92,252,0.13) 0%,transparent 65%),radial-gradient(ellipse at 75% 75%,rgba(0,229,195,0.09) 0%,transparent 60%);pointer-events:none;}
+    .blob{position:absolute;border-radius:50%;filter:blur(70px);pointer-events:none;opacity:0.13;}
+    .blob1{width:260px;height:260px;background:var(--accent);top:-80px;left:-80px;animation:drift1 8s ease-in-out infinite alternate;}
+    .blob2{width:200px;height:200px;background:var(--accent2);bottom:-50px;right:-50px;animation:drift2 10s ease-in-out infinite alternate;}
+    @keyframes drift1{to{transform:translate(30px,20px);}}
+    @keyframes drift2{to{transform:translate(-20px,-25px);}}
+    .left-content{position:relative;z-index:1;text-align:center;max-width:400px;}
+    .logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.6rem;display:flex;align-items:center;justify-content:center;gap:0.6rem;margin-bottom:2.5rem;text-decoration:none;color:var(--text);}
+    .logo-box{width:38px;height:38px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:10px;display:flex;align-items:center;justify-content:center;}
+    .logo em{color:var(--accent2);font-style:normal;}
+    .greeting{font-family:'Syne',sans-serif;font-size:2.1rem;font-weight:800;line-height:1.2;margin-bottom:1.1rem;}
+    .wave{display:inline-block;animation:wave-hand 2s ease-in-out infinite;}
+    @keyframes wave-hand{0%,100%{transform:rotate(0deg);}20%{transform:rotate(20deg);}40%{transform:rotate(-10deg);}60%{transform:rotate(15deg);}80%{transform:rotate(-5deg);}}
+    .grad{background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .hi{color:var(--accent2);}
+    .left-sub{color:var(--muted);font-size:0.9rem;margin-bottom:2rem;line-height:1.65;}
+    .left-sub strong{color:var(--text);}
+    .quote-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.1rem 1.3rem;margin-bottom:2rem;min-height:80px;display:flex;align-items:center;gap:0.85rem;text-align:left;}
+    .quote-icon{font-size:1.4rem;flex-shrink:0;}
+    .quote-text{font-size:0.83rem;color:var(--muted);line-height:1.6;transition:opacity 0.5s;}
+    .q-author{display:block;font-size:0.72rem;color:var(--accent2);margin-top:0.35rem;font-weight:500;}
+    .stat-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.6rem;}
+    .stat-card{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:0.75rem 0.6rem;text-align:center;}
+    .s-num{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;color:var(--accent2);}
+    .s-label{font-size:0.68rem;color:var(--muted);margin-top:0.1rem;}
+    .pulse-ring-wrap{display:flex;justify-content:center;margin-bottom:1.5rem;}
+    .pulse-ring{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:1.4rem;position:relative;}
+    .pulse-ring::before,.pulse-ring::after{content:'';position:absolute;border-radius:50%;border:2px solid var(--accent2);animation:ripple 2s linear infinite;}
+    .pulse-ring::after{animation-delay:1s;}
+    @keyframes ripple{0%{width:56px;height:56px;opacity:0.8;}100%{width:100px;height:100px;opacity:0;}}
+
+    /* RIGHT */
+    .right{width:490px;display:flex;flex-direction:column;justify-content:center;padding:3rem 3.5rem;background:var(--card);border-left:1px solid var(--border);}
+    .form-head{margin-bottom:1.6rem;}
+    .form-head h1{font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:700;margin-bottom:0.4rem;}
+    .form-head p{color:var(--muted);font-size:0.875rem;}
+    .form-head p a{color:var(--accent);text-decoration:none;}
+    .panel{} .panel.hidden{display:none;}
+    .field{margin-bottom:1.1rem;}
+    .field label{display:block;font-size:0.8rem;color:var(--muted);margin-bottom:0.45rem;}
+    .inp-wrap{position:relative;}
+    .inp-wrap i.icon{position:absolute;left:0.9rem;top:50%;transform:translateY(-50%);color:var(--muted);}
+    .inp-wrap input{width:100%;padding:0.8rem 0.9rem 0.8rem 2.6rem;background:var(--card2);border:1px solid var(--border);border-radius:9px;color:var(--text);outline:none;transition:border-color 0.2s;font-family:inherit;font-size:0.93rem;}
+    .inp-wrap input:focus{border-color:var(--accent);}
+    .inp-wrap input.has-eye{padding-right:2.6rem;}
+    .inp-wrap input.i-ok{border-color:rgba(0,229,195,0.5);}
+    .inp-wrap input.i-err{border-color:rgba(255,107,107,0.6);}
+    .inp-wrap input.i-warn{border-color:rgba(255,197,66,0.5);}
+    .eye-btn{position:absolute;right:0.9rem;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;padding:0;font-size:0.85rem;}
+    .hint{display:none;align-items:center;gap:0.45rem;font-size:0.75rem;margin-top:0.4rem;padding:0.42rem 0.65rem;border-radius:7px;border:1px solid transparent;line-height:1.4;}
+    .hint.show{display:flex;}
+    .hint.ok{background:rgba(0,229,195,0.07);border-color:rgba(0,229,195,0.22);color:var(--accent2);}
+    .hint.err{background:rgba(255,107,107,0.07);border-color:rgba(255,107,107,0.22);color:#ff6b6b;}
+    .hint.warn{background:rgba(255,197,66,0.07);border-color:rgba(255,197,66,0.22);color:#ffc542;}
+    .hint.info{background:rgba(124,92,252,0.07);border-color:rgba(124,92,252,0.22);color:#a98cff;}
+    .email-suggest{display:none;font-size:0.74rem;color:var(--muted);margin-top:0.28rem;}
+    .email-suggest.show{display:block;}
+    .email-suggest button{background:none;border:none;color:var(--accent);cursor:pointer;font-size:0.74rem;font-family:inherit;padding:0;text-decoration:underline;}
+    .redirect-notice{display:none;background:rgba(124,92,252,0.08);border:1px solid rgba(124,92,252,0.28);color:#a98cff;padding:0.65rem 0.9rem;border-radius:8px;margin-bottom:0.9rem;font-size:0.8rem;align-items:center;gap:0.5rem;}
+    .redirect-notice.show{display:flex;}
+    .redirect-notice a{color:var(--accent2);font-weight:600;text-decoration:none;margin-left:0.25rem;}
+    .login-tabs{display:flex;gap:0;background:var(--card2);border:1px solid var(--border);border-radius:9px;padding:3px;margin-bottom:1.4rem;}
+    .tab-btn{flex:1;padding:0.48rem 0.6rem;background:none;border:none;border-radius:7px;color:var(--muted);font-size:0.78rem;font-family:inherit;cursor:pointer;transition:background 0.2s,color 0.2s;display:flex;align-items:center;justify-content:center;gap:0.35rem;}
+    .tab-btn.active{background:var(--card);color:var(--text);border:1px solid var(--border);}
+    .forgot-row{display:flex;justify-content:flex-end;margin-top:-0.5rem;margin-bottom:0.6rem;}
+    .forgot-link{font-size:0.76rem;color:var(--accent);background:none;border:none;font-family:inherit;cursor:pointer;opacity:0.85;transition:opacity 0.2s;}
+    .forgot-link:hover{opacity:1;}
+    .submit-btn{width:100%;padding:0.85rem;background:linear-gradient(135deg,var(--accent),#6040d8);border:none;border-radius:9px;color:#fff;font-weight:600;cursor:pointer;margin-top:0.5rem;font-family:inherit;font-size:0.97rem;display:flex;align-items:center;justify-content:center;gap:0.5rem;transition:opacity 0.2s;}
+    .submit-btn:hover{opacity:0.9;}
+    .submit-btn:disabled{opacity:0.55;cursor:not-allowed;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+    .spin{animation:spin 0.8s linear infinite;}
+    .divider{display:flex;align-items:center;gap:0.875rem;margin:1.1rem 0;color:var(--muted);font-size:0.78rem;}
+    .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
+    .demo-btn{width:100%;padding:0.78rem;background:transparent;border:1px solid var(--border);border-radius:9px;color:var(--text);cursor:pointer;font-family:inherit;font-size:0.88rem;transition:border-color 0.2s,color 0.2s;}
+    .demo-btn:hover{border-color:var(--accent2);color:var(--accent2);}
+    .bottom-link{text-align:center;margin-top:1.4rem;color:var(--muted);font-size:0.82rem;}
+    .bottom-link a{color:var(--accent);text-decoration:none;}
+    .err-box{background:rgba(255,107,107,0.07);border:1px solid rgba(255,107,107,0.22);color:#ff6b6b;padding:0.65rem 0.9rem;border-radius:8px;margin-bottom:0.9rem;display:none;align-items:center;gap:0.5rem;font-size:0.82rem;}
+    .ok-box{background:rgba(0,229,195,0.07);border:1px solid rgba(0,229,195,0.22);color:var(--accent2);padding:0.65rem 0.9rem;border-radius:8px;margin-bottom:0.9rem;display:none;align-items:center;gap:0.5rem;font-size:0.82rem;}
+    .back-btn{background:none;border:none;color:var(--muted);font-size:0.8rem;font-family:inherit;cursor:pointer;display:flex;align-items:center;gap:0.4rem;margin-bottom:1.2rem;padding:0;transition:color 0.2s;}
+    .back-btn:hover{color:var(--text);}
+
+    /* OTP boxes */
+    .otp-wrap{display:flex;gap:0.55rem;justify-content:center;margin:1.2rem 0 0.5rem;}
+    .otp-box{width:46px;height:54px;background:var(--card2);border:1px solid var(--border);border-radius:9px;text-align:center;font-size:1.5rem;font-family:'Syne',sans-serif;font-weight:700;color:var(--text);outline:none;transition:border-color 0.2s,color 0.2s;}
+    .otp-box:focus{border-color:var(--accent2);}
+    .otp-box.filled{border-color:rgba(0,229,195,0.5);color:var(--accent2);}
+    .otp-box.otp-err{border-color:rgba(255,107,107,0.7);color:#ff6b6b;animation:shake 0.4s ease;}
+    .otp-box.otp-ok{border-color:rgba(0,229,195,0.7);color:var(--accent2);}
+    @keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-5px);}40%,80%{transform:translateX(5px);}}
+    .otp-timer{font-size:0.74rem;color:var(--muted);text-align:center;margin-top:0.4rem;}
+    .countdown{color:var(--accent);font-weight:600;}
+    .resend-btn{background:none;border:none;color:var(--accent);font-size:0.74rem;font-family:inherit;cursor:pointer;text-decoration:underline;display:none;}
+    .resend-btn.show{display:inline;}
+
+    /* Send code action row */
+    .send-btn{width:100%;padding:0.8rem;background:var(--card2);border:1px solid rgba(0,229,195,0.3);border-radius:9px;color:var(--accent2);font-family:inherit;font-size:0.87rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.5rem;transition:background 0.2s,border-color 0.2s;margin-bottom:0.4rem;}
+    .send-btn:hover:not(:disabled){background:rgba(0,229,195,0.07);border-color:rgba(0,229,195,0.5);}
+    .send-btn:disabled{opacity:0.5;cursor:not-allowed;}
+
+    /* ═══ EMAIL MODAL (login OTP tab only) ═══ */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;z-index:999;backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity 0.3s;}
+    .modal-overlay.open{opacity:1;pointer-events:all;}
+    .email-modal{width:520px;max-width:95vw;background:#1a1a2e;border:1px solid rgba(255,255,255,0.1);border-radius:16px;overflow:hidden;transform:translateY(20px);transition:transform 0.3s;}
+    .modal-overlay.open .email-modal{transform:translateY(0);}
+    .email-chrome{background:#12121f;border-bottom:1px solid rgba(255,255,255,0.07);padding:0.7rem 1rem;display:flex;align-items:center;gap:0.5rem;}
+    .chrome-dot{width:11px;height:11px;border-radius:50%;}
+    .chrome-title{flex:1;text-align:center;font-size:0.75rem;color:var(--muted);}
+    .email-header{padding:1.1rem 1.4rem 0.8rem;border-bottom:1px solid rgba(255,255,255,0.06);}
+    .email-from{display:flex;align-items:center;gap:0.65rem;margin-bottom:0.6rem;}
+    .avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;flex-shrink:0;}
+    .from-meta .from-name{font-size:0.82rem;font-weight:600;color:var(--text);}
+    .from-meta .from-addr{font-size:0.72rem;color:var(--muted);}
+    .email-subject{font-size:0.9rem;font-weight:600;color:var(--text);}
+    .email-to{font-size:0.72rem;color:var(--muted);margin-top:0.2rem;}
+    .email-body{padding:1.4rem;font-size:0.84rem;color:#c8c8e0;line-height:1.7;}
+    .email-body .greeting-line{font-size:0.92rem;font-weight:500;color:var(--text);margin-bottom:0.7rem;}
+    .otp-display{text-align:center;margin:1.4rem 0;}
+    .otp-display .otp-digits{font-family:'Syne',sans-serif;font-size:2.6rem;font-weight:800;letter-spacing:0.2em;color:var(--accent2);background:rgba(0,229,195,0.07);border:1px dashed rgba(0,229,195,0.3);border-radius:10px;padding:0.5rem 1.2rem;display:inline-block;}
+    .otp-display .expires{font-size:0.72rem;color:var(--muted);margin-top:0.5rem;}
+    .email-footer{background:#12121f;border-top:1px solid rgba(255,255,255,0.05);padding:0.75rem 1.4rem;font-size:0.7rem;color:var(--muted);text-align:center;}
+    .modal-close-row{padding:0.9rem 1.4rem;display:flex;gap:0.65rem;}
+    .fill-btn{flex:1;padding:0.72rem;background:linear-gradient(135deg,var(--accent2),#00b89a);border:none;border-radius:8px;color:#07070f;font-weight:700;font-family:inherit;font-size:0.84rem;cursor:pointer;}
+    .close-btn{padding:0.72rem 1rem;background:var(--card2);border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:inherit;font-size:0.84rem;cursor:pointer;}
+    .close-btn:hover{color:var(--text);}
+
+    /* Loading overlay */
+    .sending-overlay{position:fixed;inset:0;background:rgba(7,7,15,0.85);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:998;backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity 0.3s;gap:1rem;}
+    .sending-overlay.show{opacity:1;pointer-events:all;}
+    .sending-ring{width:56px;height:56px;border:3px solid var(--border);border-top-color:var(--accent2);border-radius:50%;animation:spin 0.9s linear infinite;}
+    .sending-label{color:var(--muted);font-size:0.88rem;}
+    .sending-label span{color:var(--accent2);}
+
+    /* New password section */
+    .new-pass-section{display:none;margin-top:1rem;}
+    .new-pass-section.show{display:block;}
+
+    /* Email-sent confirmation banner (reset flow) */
+    .sent-banner{display:none;background:rgba(0,229,195,0.07);border:1px solid rgba(0,229,195,0.25);border-radius:10px;padding:0.85rem 1rem;margin-bottom:1rem;align-items:flex-start;gap:0.65rem;}
+    .sent-banner.show{display:flex;}
+    .sent-banner i{color:var(--accent2);margin-top:2px;flex-shrink:0;}
+    .sent-banner p{color:var(--accent2);font-size:0.82rem;line-height:1.55;margin:0;}
+    .sent-banner strong{color:#fff;}
+
+    @media(max-width:860px){.left{display:none;}.right{width:100%;padding:2rem 1.5rem;}}
+  </style>
+</head>
+<body>
+
+<!-- LEFT -->
+<div class="left">
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+  <div class="left-content">
+    <a class="logo" href="../index.html"><div class="logo-box">🧠</div>Mind<em>Guard</em> AI</a>
+    <div class="pulse-ring-wrap"><div class="pulse-ring">🧠</div></div>
+    <div class="greeting">
+      Welcome back <span class="wave">👋</span><br>
+      your <span class="grad">mind missed</span><br>
+      <span class="hi">us too!</span>
+    </div>
+    <p class="left-sub">Your <strong>burnout score</strong> is waiting. Let's see how you're doing — and get you feeling <strong>awesome</strong> again. 🌿</p>
+    <div class="quote-box">
+      <div class="quote-icon" id="quoteIcon">💬</div>
+      <div class="quote-text" id="quoteText">Loading your daily dose of wisdom...<span class="q-author"></span></div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-card"><div class="s-num">94%</div><div class="s-label">😌 Stress relief</div></div>
+      <div class="stat-card"><div class="s-num">12k+</div><div class="s-label">🧑‍💻 Active users</div></div>
+      <div class="stat-card"><div class="s-num">4.9★</div><div class="s-label">⭐ User rating</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+  <div class="form-head">
+    <h1 id="panelTitle">Sign in 👤</h1>
+    <p>Don't have an account? <a href="signup.html">Sign up free</a></p>
+  </div>
+
+  <div class="err-box" id="errBox"><i class="fas fa-exclamation-circle"></i>&nbsp;<span id="errText"></span></div>
+  <div class="ok-box"  id="okBox"><i class="fas fa-check-circle"></i>&nbsp;<span id="okText"></span></div>
+  <div class="redirect-notice" id="redirectNotice">
+    <i class="fas fa-user-plus"></i>
+    <span>No account found for that email. <a href="signup.html">Create one free →</a></span>
+  </div>
+
+  <!-- ════ PANEL: Login ════ -->
+  <div id="panelLogin" class="panel">
+    <div class="login-tabs">
+      <button class="tab-btn active" id="tabPass" onclick="switchTab('password')"><i class="fas fa-lock"></i> Password</button>
+      <button class="tab-btn" id="tabOTP" onclick="switchTab('otp')"><i class="fas fa-envelope-open-text"></i> Email Code</button>
+    </div>
+
+    <div class="field">
+      <label>Email Address</label>
+      <div class="inp-wrap">
+        <i class="icon fas fa-envelope"></i>
+        <input type="email" id="email" placeholder="you@example.com"
+          oninput="validateEmail(this.value,'emailHint','email')"
+          />
+      </div>
+      <div class="hint" id="emailHint"></div>
+      <div class="email-suggest" id="emailSuggest">Did you mean <button onclick="applyEmailSuggest()"><span id="suggestEmail"></span></button>?</div>
+    </div>
+
+    <!-- Password sub -->
+    <div id="subPassword">
+      <div class="field">
+        <label>Password</label>
+        <div class="inp-wrap">
+          <i class="icon fas fa-lock"></i>
+          <input type="password" id="password" class="has-eye" placeholder="••••••••" oninput="livePassCheck()"/>
+          <button type="button" class="eye-btn" onclick="toggleEye('password','eyeIcon')"><i class="fas fa-eye" id="eyeIcon"></i></button>
+        </div>
+        <div class="hint" id="passHint"></div>
+      </div>
+      <div class="forgot-row">
+        <button class="forgot-link" onclick="showPanel('panelForgot')"><i class="fas fa-key"></i> Forgot password?</button>
+      </div>
+      <button class="submit-btn" onclick="doPasswordLogin()"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+    </div>
+
+    <!-- OTP sub -->
+    <div id="subOTP" style="display:none;">
+      <p style="font-size:0.8rem;color:var(--muted);margin-bottom:0.85rem;line-height:1.5;">We'll send a <strong style="color:var(--text);">6-digit verification code</strong> to your registered email address.</p>
+      <button class="send-btn" id="sendOTPBtn" onclick="initiateSend('login')">
+        <i class="fas fa-paper-plane"></i> Send Verification Code to My Email
+      </button>
+    </div>
+
+    <div class="divider">or</div>
+    <button class="demo-btn" onclick="demoLogin()"><i class="fas fa-flask"></i> Continue as Demo User</button>
+    <div class="bottom-link">New here? <a href="signup.html">Create your free account →</a></div>
+  </div>
+
+  <!-- ════ PANEL: OTP Entry (login tab) ════ -->
+  <div id="panelOTP" class="panel hidden">
+    <button class="back-btn" onclick="showPanel('panelLogin')"><i class="fas fa-arrow-left"></i> Back</button>
+    <p style="font-size:0.84rem;color:var(--muted);margin-bottom:0.3rem;">Code sent to</p>
+    <p style="font-size:0.9rem;color:var(--accent2);font-weight:600;margin-bottom:1rem;" id="otpTargetEmail"></p>
+    <p style="font-size:0.8rem;color:var(--muted);">Enter the 6-digit code from your email inbox:</p>
+    <div class="otp-wrap" id="otpWrap">
+      <input class="otp-box" id="o0" maxlength="1" oninput="otpIn(0,'o')" onkeydown="otpKey(event,0,'o')"/>
+      <input class="otp-box" id="o1" maxlength="1" oninput="otpIn(1,'o')" onkeydown="otpKey(event,1,'o')"/>
+      <input class="otp-box" id="o2" maxlength="1" oninput="otpIn(2,'o')" onkeydown="otpKey(event,2,'o')"/>
+      <input class="otp-box" id="o3" maxlength="1" oninput="otpIn(3,'o')" onkeydown="otpKey(event,3,'o')"/>
+      <input class="otp-box" id="o4" maxlength="1" oninput="otpIn(4,'o')" onkeydown="otpKey(event,4,'o')"/>
+      <input class="otp-box" id="o5" maxlength="1" oninput="otpIn(5,'o')" onkeydown="otpKey(event,5,'o')"/>
+    </div>
+    <div class="hint" id="otpHint" style="justify-content:center;margin-bottom:0.6rem;"></div>
+    <div class="otp-timer">Expires in <span class="countdown" id="countdown">05:00</span>
+      &nbsp;·&nbsp;<button class="resend-btn" id="resendBtn" onclick="initiateSend('login',true)">Resend</button>
+    </div>
+    <button class="submit-btn" style="margin-top:1.1rem;" onclick="verifyLoginOTP()">
+      <i class="fas fa-check-circle"></i> Verify &amp; Sign In
+    </button>
+    <p style="font-size:0.72rem;color:var(--muted);text-align:center;margin-top:0.65rem;">
+      <i class="fas fa-inbox"></i> Can't find it? Check your <strong>Spam</strong> or <strong>Promotions</strong> folder.
+    </p>
+  </div>
+
+  <!-- ════ PANEL: Forgot Password ════ -->
+  <div id="panelForgot" class="panel hidden">
+    <button class="back-btn" onclick="showPanel('panelLogin')"><i class="fas fa-arrow-left"></i> Back to sign in</button>
+    <p style="font-size:0.84rem;color:var(--muted);margin-bottom:1.2rem;line-height:1.6;">Enter your registered email. We'll send a reset code directly to your inbox — enter it below with your new password.</p>
+
+    <div class="field">
+      <label>Registered Email</label>
+      <div class="inp-wrap">
+        <i class="icon fas fa-envelope"></i>
+        <input type="email" id="forgotEmail" placeholder="you@example.com"
+          oninput="validateEmail(this.value,'forgotHint','forgotEmail')"
+          onblur="checkForgotEmail()"/>
+      </div>
+      <div class="hint" id="forgotHint"></div>
+    </div>
+
+    <button class="send-btn" id="sendResetBtn" onclick="initiateSend('reset')">
+      <i class="fas fa-paper-plane"></i> Send Reset Code to My Email
+    </button>
+
+    <!-- ── Sent confirmation banner (shown after successful SMTP send) ── -->
+    <div class="sent-banner" id="resetSentBanner">
+      <i class="fas fa-envelope-circle-check"></i>
+      <p>Reset code sent to <strong id="resetSentAddr"></strong>. Check your inbox (and Spam folder) and enter the 6-digit code below.</p>
+    </div>
+
+    <!-- OTP + new password (shown after send) -->
+    <div class="new-pass-section" id="newPassSection">
+      <p style="font-size:0.8rem;color:var(--muted);margin-bottom:0.3rem;text-align:center;">Enter the 6-digit reset code:</p>
+      <div class="otp-wrap">
+        <input class="otp-box" id="r0" maxlength="1" oninput="otpIn(0,'r')" onkeydown="otpKey(event,0,'r')"/>
+        <input class="otp-box" id="r1" maxlength="1" oninput="otpIn(1,'r')" onkeydown="otpKey(event,1,'r')"/>
+        <input class="otp-box" id="r2" maxlength="1" oninput="otpIn(2,'r')" onkeydown="otpKey(event,2,'r')"/>
+        <input class="otp-box" id="r3" maxlength="1" oninput="otpIn(3,'r')" onkeydown="otpKey(event,3,'r')"/>
+        <input class="otp-box" id="r4" maxlength="1" oninput="otpIn(4,'r')" onkeydown="otpKey(event,4,'r')"/>
+        <input class="otp-box" id="r5" maxlength="1" oninput="otpIn(5,'r')" onkeydown="otpKey(event,5,'r')"/>
+      </div>
+      <div class="hint" id="resetOtpHint" style="justify-content:center;margin-bottom:0.8rem;"></div>
+
+      <div class="field">
+        <label>New Password</label>
+        <div class="inp-wrap">
+          <i class="icon fas fa-lock"></i>
+          <input type="password" id="newPassword" class="has-eye" placeholder="Create a new password" oninput="checkNewPass()"/>
+          <button type="button" class="eye-btn" onclick="toggleEye('newPassword','newEyeIcon')"><i class="fas fa-eye" id="newEyeIcon"></i></button>
+        </div>
+        <div class="hint" id="newPassHint"></div>
+      </div>
+
+      <button class="submit-btn" onclick="verifyResetOTP()">
+        <i class="fas fa-shield-alt"></i> Verify Code &amp; Reset Password
+      </button>
+      <p style="font-size:0.72rem;color:var(--muted);text-align:center;margin-top:0.65rem;">
+        Didn't receive it? Check Spam / Promotions or
+        <button style="background:none;border:none;color:var(--accent);font-size:0.72rem;font-family:inherit;cursor:pointer;text-decoration:underline;padding:0;" onclick="initiateSend('reset',true)">resend code</button>
+      </p>
+    </div>
+  </div>
+
+</div><!-- /right -->
+
+<!-- ════ SENDING OVERLAY ════ -->
+<div class="sending-overlay" id="sendingOverlay">
+  <div class="sending-ring"></div>
+  <div class="sending-label" id="sendingLabel">Sending code to <span id="sendingEmail"></span>…</div>
+</div>
+
+<!-- ════ EMAIL MODAL (login OTP tab only — not shown for reset) ════ -->
+<div class="modal-overlay" id="emailModal">
+  <div class="email-modal">
+    <div class="email-chrome">
+      <div class="chrome-dot" style="background:#ff5f57;"></div>
+      <div class="chrome-dot" style="background:#ffbd2e;"></div>
+      <div class="chrome-dot" style="background:#28ca41;"></div>
+      <div class="chrome-title">📬 Inbox — MindGuard AI</div>
+    </div>
+    <div class="email-header">
+      <div class="email-from">
+        <div class="avatar">MG</div>
+        <div class="from-meta">
+          <div class="from-name">MindGuard AI</div>
+          <div class="from-addr">nixitha51@gmail.com</div>
+        </div>
+        <div style="margin-left:auto;font-size:0.7rem;color:var(--muted);" id="emailTimestamp"></div>
+      </div>
+      <div class="email-subject" id="emailSubject">Your MindGuard Verification Code</div>
+      <div class="email-to">To: <span id="emailToAddr" style="color:var(--accent2);"></span></div>
+    </div>
+    <div class="email-body">
+      <div class="greeting-line" id="emailGreeting">Hi there,</div>
+      <div id="emailBodyText"></div>
+      <div class="otp-display">
+        <div class="otp-digits" id="modalOTPDigits">— — — — — —</div>
+        <div class="expires">⏱ This code expires in 5 minutes. Do not share it with anyone.</div>
+      </div>
+      <div id="emailBodyBottom"></div>
+    </div>
+    <div class="email-footer">© 2025 MindGuard AI · You're receiving this because you requested a code · <a href="#" style="color:var(--accent);">Unsubscribe</a></div>
+    <div class="modal-close-row">
+      <button class="fill-btn" id="autoFillBtn" onclick="autoFillAndClose()">↓ Auto-fill code for me</button>
+      <button class="close-btn" onclick="closeEmailModal()">Got it, close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══ CONFIG ══ */
+// Backend URL — change port/host if your API runs elsewhere
+
+/* ══ STATE ══ */
+let activeOTP     = '';
+let otpMode       = 'login'; // 'login' | 'reset'
+let countdownTimer = null;
+let lastEmailAddr = '';
+
+/* ══ QUOTES ══ */
+const QUOTES=[
+  {icon:'🌱',text:"You can't pour from an empty cup. Taking care of yourself is the first step.",author:'— MindGuard Wisdom'},
+  {icon:'🔥',text:"Burnout isn't a badge of honor. Rest is productive too.",author:'— MindGuard Wisdom'},
+  {icon:'🌊',text:"Small daily check-ins prevent the big crash. You're doing great.",author:'— MindGuard AI'},
+  {icon:'🧘',text:'Progress, not perfection. Every step toward wellness counts.',author:'— MindGuard Community'},
+  {icon:'💡',text:'Awareness is the first step to change. Signing in = taking care of yourself.',author:'— MindGuard Wisdom'},
+];
+let qi=0;
+const API_BASE = "http://localhost:8000";  // ✅ ADD THIS
+
+async function doPasswordLogin(){
+  const em = document.getElementById('email').value.trim();
+  const p  = document.getElementById('password').value;
+
+  if(!em || !p){
+    showErr("Enter email and password");
+    return;
+  }
+
+  try{
+    const resp = await fetch(`${API_BASE}/api/v1/auth/login`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email: em, password: p })
+    });
+
+    const data = await resp.json();
+
+    if(!resp.ok){
+      showErr(data.detail || "Login failed");
+      return;
+    }
+
+    localStorage.setItem('mg_user', JSON.stringify(data));
+    localStorage.setItem('mg_loggedin','true');
+
+    showOK("Login successful!");
+
+    setTimeout(()=>{
+      window.location.href="dashboard.html";
+    },800);
+
+  }catch(e){
+    showErr("Server error");
+  }
+}
+function showQuote(i){
+  const q=QUOTES[i],t=document.getElementById('quoteText'),ic=document.getElementById('quoteIcon');
+  t.style.opacity='0';
+  setTimeout(()=>{ic.textContent=q.icon;t.innerHTML=q.text+'<span class="q-author">'+q.author+'</span>';t.style.opacity='1';},400);
+}
+showQuote(0); setInterval(()=>{qi=(qi+1)%QUOTES.length;showQuote(qi);},4000);
+
+/* ══ PANELS ══ */
+function showPanel(id){
+  ['panelLogin','panelOTP','panelForgot'].forEach(p=>{
+    document.getElementById(p).classList.toggle('hidden',p!==id);
+  });
+  const titles={panelLogin:'Sign in 👤',panelOTP:'Verify your email 📬',panelForgot:'Reset password 🔑'};
+  document.getElementById('panelTitle').textContent=titles[id];
+  clearBoxes();
+}
+
+/* ══ TABS ══ */
+function switchTab(mode){
+  document.getElementById('subPassword').style.display=mode==='password'?'block':'none';
+  document.getElementById('subOTP').style.display=mode==='otp'?'block':'none';
+  document.getElementById('tabPass').className='tab-btn'+(mode==='password'?' active':'');
+  document.getElementById('tabOTP').className='tab-btn'+(mode==='otp'?' active':'');
+  clearBoxes();
+}
+
+function clearBoxes(){
+  document.getElementById('errBox').style.display='none';
+  document.getElementById('okBox').style.display='none';
+  document.getElementById('redirectNotice').className='redirect-notice';
+}
+
+/* ══ EMAIL VALIDATION ══ */
+const TYPOS={'gmial.com':'gmail.com','gmaill.com':'gmail.com','gamil.com':'gmail.com','gnail.com':'gmail.com','yaho.com':'yahoo.com','yahooo.com':'yahoo.com','yhoo.com':'yahoo.com','outlok.com':'outlook.com','outllok.com':'outlook.com','hotmial.com':'hotmail.com','hotmal.com':'hotmail.com','iclod.com':'icloud.com'};
+let sugEmail='';
+
+function setHint(id,type,msg){
+  const el=document.getElementById(id);
+  const ico={'ok':'check-circle','err':'times-circle','warn':'exclamation-triangle','info':'info-circle'}[type]||'info-circle';
+  el.className='hint show '+type;
+  el.innerHTML=`<i class="fas fa-${ico}"></i><span style="margin-left:2px;">${msg}</span>`;
+}
+function clearHint(id){document.getElementById(id).className='hint';}
+function setInputCls(id,cls){const el=document.getElementById(id);el.className=(el.className.replace(/\bi-(ok|err|warn)\b/g,'')+' '+(cls||'')).trim();}
+
+function validateEmail(val,hintId,inputId){
+  document.getElementById('emailSuggest')&&(document.getElementById('emailSuggest').className='email-suggest');
+  document.getElementById('redirectNotice').className='redirect-notice';
+  if(!val){clearHint(hintId);setInputCls(inputId,'');return;}
+  if(!val.includes('@')){setHint(hintId,'err','Missing "@" — every email needs one (e.g. you@example.com)');setInputCls(inputId,'i-err');return;}
+  if((val.match(/@/g)||[]).length>1){setHint(hintId,'err','Only one "@" is allowed.');setInputCls(inputId,'i-err');return;}
+  const[local,domain]=val.split('@');
+  if(!local){setHint(hintId,'err','Add your name before the "@"');setInputCls(inputId,'i-err');return;}
+  if(!domain){setHint(hintId,'warn','Add your provider after "@" (e.g. @gmail.com)');setInputCls(inputId,'i-warn');return;}
+  if(!domain.includes('.')){setHint(hintId,'warn','Domain needs a dot — like @gmail.com');setInputCls(inputId,'i-warn');return;}
+  if(domain.split('.').pop().length<2){setHint(hintId,'warn','Extension too short (needs .com, .org, etc.)');setInputCls(inputId,'i-warn');return;}
+  if(TYPOS[domain]){
+    const fixed=local+'@'+TYPOS[domain]; sugEmail=fixed;
+    if(document.getElementById('suggestEmail')) document.getElementById('suggestEmail').textContent=fixed;
+    if(document.getElementById('emailSuggest')) document.getElementById('emailSuggest').className='email-suggest show';
+    setHint(hintId,'warn','Looks like a typo — check suggestion below!');setInputCls(inputId,'i-warn');return;
+  }
+  setHint(hintId,'ok','Looks great!');setInputCls(inputId,'i-ok');
+}
+
+function strictEmail(val,hintId,inputId){
+  if(!val){clearHint(hintId);setInputCls(inputId,'');return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val)){setHint(hintId,'err',"Doesn't look like a valid email. Try: yourname@example.com");setInputCls(inputId,'i-err');}
+}
+
+function applyEmailSuggest(){
+  document.getElementById('email').value=sugEmail;
+  document.getElementById('emailSuggest').className='email-suggest';
+  validateEmail(sugEmail,'emailHint','email');
+}
+
+
+
+function checkForgotEmail(){
+  const em=document.getElementById('forgotEmail').value.trim();
+
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)){
+    setHint('forgotHint','err','Enter a valid email.');
+    return;
+  }
+
+  setHint('forgotHint','info','We will verify this email via server.');
+}
+/* ══ LIVE PASSWORD CHECK ══ */
+function livePassCheck(){
+  const p=document.getElementById('password').value;
+
+  if(!p){
+    clearHint('passHint');
+    return;
+  }
+
+  if(p.length < 6){
+    setHint('passHint','warn','Password should be at least 6 characters');
+  } else {
+    setHint('passHint','ok','Looks good');
+  }
+}
+
+function checkNewPass(){
+  const p=document.getElementById('newPassword').value;
+  if(!p){clearHint('newPassHint');return;}
+  if(p.length<6){setHint('newPassHint','warn','At least 6 characters required.');return;}
+  if(p.length>=8 && /[A-Z]/.test(p) && /[0-9]/.test(p)){setHint('newPassHint','ok','Strong password!');}
+  else{setHint('newPassHint','info','Tip: add uppercase & numbers to strengthen it.');}
+}
+
+function toggleEye(inputId,iconId){
+  const inp=document.getElementById(inputId),ico=document.getElementById(iconId);
+  if(inp.type==='password'){inp.type='text';ico.className='fas fa-eye-slash';}
+  else{inp.type='password';ico.className='fas fa-eye';}
+}
+
+
+/* ══ GENERATE OTP ══ */
+function genOTP(){return String(Math.floor(100000+Math.random()*900000));}
+
+/* ═══════════════════════════════════════════════════════════════
+   INITIATE SEND
+   • mode='login'  → shows in-page email preview modal (existing UX)
+   • mode='reset'  → calls backend SMTP endpoint, NO in-page preview
+   ═══════════════════════════════════════════════════════════════ */
+   async function initiateSend(mode, isResend=false){
+  const emailInput = mode==='reset' ? 'forgotEmail' : 'email';
+  const hintId     = mode==='reset' ? 'forgotHint'  : 'emailHint';
+  const em = document.getElementById(emailInput).value.trim();
+
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)){
+    setHint(hintId,'err','Enter a valid email address first.');
+    return;
+  }
+
+  // ❌ REMOVE user check completely
+
+  otpMode       = mode;
+  lastEmailAddr = em;
+  activeOTP     = genOTP();
+
+  // Show sending overlay
+  document.getElementById('sendingEmail').textContent = em;
+  document.getElementById('sendingOverlay').classList.add('show');
+
+  if(mode === 'reset'){
+    /* ✅ RESET: send via backend */
+    await sendOTPViaBackend(em, activeOTP, mode, "User");
+  } else {
+    /* ✅ LOGIN OTP (no user object needed) */
+    await sendOTPWithPreview(em, activeOTP, mode);
+  }
+}
+/* ── Login OTP: generate email body with Claude API + show in-page modal ── */
+async function sendOTPWithPreview(em, otp, mode, user){
+  let emailBody='', emailSubject='', emailGreeting='', emailBottom='';
+  try{
+    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:400,
+        messages:[{
+          role:'user',
+          content:`Write a short, friendly email verification body for MindGuard AI wellness app. The user's name is "${user.firstName||user.name}". Do NOT include the OTP code itself. Write ONLY these 3 sections separated by the exact delimiter "|||SPLIT|||":
+1. A warm 1-sentence greeting line (just the greeting, no "Hi name" prefix)
+2. A 2-3 sentence body explaining they requested a sign-in code for MindGuard AI
+3. A 1-sentence security note (e.g. "If you didn't request this, no action is needed.")
+No subject line. No extra text. Only those 3 sections.`
+        }]
+      })
+    });
+    const data=await resp.json();
+    const raw=data.content?.[0]?.text||'';
+    const parts=raw.split('|||SPLIT|||');
+    emailGreeting=parts[0]?.trim()||'';
+    emailBody=parts[1]?.trim()||'We received a request to sign in to your MindGuard AI account.';
+    emailBottom=parts[2]?.trim()||'If you did not request this, no action is needed.';
+    emailSubject='Your MindGuard AI sign-in code';
+  } catch(e){
+    emailGreeting='Hope you\'re doing well!';
+    emailBody='We received a request to sign in to your MindGuard AI account. Use the code below to complete your sign-in. This code expires in 5 minutes.';
+    emailBottom='If you did not request this, you can safely ignore this email.';
+    emailSubject='Your MindGuard AI sign-in code';
+  }
+
+  document.getElementById('sendingOverlay').classList.remove('show');
+
+  const now=new Date();
+  document.getElementById('emailTimestamp').textContent=now.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('emailSubject').textContent=emailSubject;
+  document.getElementById('emailToAddr').textContent=em;
+  document.getElementById('emailGreeting').textContent='Hi '+(user.firstName||user.name)+', '+emailGreeting;
+  document.getElementById('emailBodyText').innerHTML='<p>'+emailBody+'</p>';
+  document.getElementById('emailBodyBottom').innerHTML='<p style="font-size:0.8rem;color:#888;">'+emailBottom+'</p>';
+  document.getElementById('modalOTPDigits').textContent=otp.split('').join('  ');
+  document.getElementById('autoFillBtn').setAttribute('data-mode','login');
+  document.getElementById('emailModal').classList.add('open');
+  document.getElementById('otpTargetEmail').textContent=em;
+  clearOTP('o');
+  startCountdown();
+}
+
+/* ── Reset password: call backend SMTP endpoint ── */
+async function sendOTPViaBackend(em, otp, mode, name){
+  try{
+    const resp = await fetch(`${API_BASE}/send_otp`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: em, otp: otp, mode: mode, name: name })
+    });
+
+    document.getElementById('sendingOverlay').classList.remove('show');
+
+    if(!resp.ok){
+      const err = await resp.json().catch(()=>({}));
+      showErr('Failed to send email: '+(err.error||'Server error. Check your backend is running.'));
+      return;
+    }
+
+    // Show the sent-confirmation banner and reveal OTP entry fields
+    document.getElementById('resetSentAddr').textContent = em;
+    document.getElementById('resetSentBanner').className = 'sent-banner show';
+    document.getElementById('newPassSection').className  = 'new-pass-section show';
+    clearOTP('r');
+    document.getElementById('sendResetBtn').disabled = true;
+    document.getElementById('sendResetBtn').innerHTML = '<i class="fas fa-check"></i> Code sent — check your inbox';
+
+    // Re-enable resend after 60 s
+    setTimeout(()=>{
+      const btn = document.getElementById('sendResetBtn');
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-paper-plane"></i> Resend Reset Code';
+    }, 60000);
+
+  } catch(networkErr){
+    document.getElementById('sendingOverlay').classList.remove('show');
+    showErr('Cannot reach the server. Make sure your backend is running on '+API_BASE);
+  }
+}
+
+/* ══ EMAIL MODAL (login tab) ══ */
+function closeEmailModal(){
+  document.getElementById('emailModal').classList.remove('open');
+  showPanel('panelOTP');
+}
+
+function reopenEmailModal(){
+  document.getElementById('emailModal').classList.add('open');
+}
+
+function autoFillAndClose(){
+  document.getElementById('emailModal').classList.remove('open');
+  showPanel('panelOTP');
+  for(let i=0;i<6;i++){
+    const b=document.getElementById('o'+i);
+    b.value=activeOTP[i]; b.className='otp-box filled';
+  }
+  clearHint('otpHint');
+}
+
+/* ══ OTP BOXES ══ */
+function clearOTP(pfx){for(let i=0;i<6;i++){const b=document.getElementById(pfx+i);b.value='';b.className='otp-box';}}
+
+function otpIn(idx,pfx){
+  const b=document.getElementById(pfx+idx);
+  b.value=b.value.replace(/\D/g,'').slice(-1);
+  b.className='otp-box'+(b.value?' filled':'');
+  if(b.value&&idx<5) document.getElementById(pfx+(idx+1)).focus();
+}
+function otpKey(e,idx,pfx){
+  if(e.key==='Backspace'&&!document.getElementById(pfx+idx).value&&idx>0) document.getElementById(pfx+(idx-1)).focus();
+  if(e.key==='ArrowLeft'&&idx>0) document.getElementById(pfx+(idx-1)).focus();
+  if(e.key==='ArrowRight'&&idx<5) document.getElementById(pfx+(idx+1)).focus();
+}
+function getOTP(pfx){let v='';for(let i=0;i<6;i++) v+=document.getElementById(pfx+i).value;return v;}
+
+function shakeOTP(pfx){for(let i=0;i<6;i++) document.getElementById(pfx+i).className='otp-box otp-err';}
+function successOTP(pfx){for(let i=0;i<6;i++) document.getElementById(pfx+i).className='otp-box otp-ok';}
+
+/* ══ OTP VERIFY (login) ══ */
+function verifyLoginOTP(){
+  const entered=getOTP('o');
+
+  if(entered.length<6){
+    setHint('otpHint','warn','Please fill in all 6 digits.');
+    return;
+  }
+
+  if(entered!==activeOTP){
+    shakeOTP('o');
+    setHint('otpHint','err','Incorrect code. Check your email and try again.');
+    return;
+  }
+
+  successOTP('o');
+  setHint('otpHint','ok','Code verified! Signing you in…');
+
+  clearInterval(countdownTimer);
+
+  // ✅ FIX: create user object
+  const user = {
+    email: lastEmailAddr,
+    name: lastEmailAddr.split('@')[0],
+    user_id: "USER_" + Date.now()
+  };
+
+  setTimeout(()=>loginSuccess(user),800);
+}
+function verifyResetOTP(){
+  const entered = getOTP('r');
+  const newPass = document.getElementById('newPassword').value;
+
+  if(entered.length < 6){
+    setHint('resetOtpHint','warn','Fill in all 6 digits of the reset code.');
+    return;
+  }
+
+  if(entered !== activeOTP){
+    shakeOTP('r');
+    setHint('resetOtpHint','err','Wrong code. Check your inbox and try again.');
+    return;
+  }
+
+  if(!newPass || newPass.length < 6){
+    setHint('newPassHint','err','Set a new password (at least 6 characters).');
+    return;
+  }
+
+  fetch("http://localhost:8000/api/v1/reset_password", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      email: lastEmailAddr,
+      password: newPass
+    })
+  })
+  .then(async res => {
+    if(!res.ok){
+      throw new Error("API not found or server error");
+    }
+    return res.json();
+  })
+  .then(data => {
+    console.log("Reset response:", data);
+
+    if(data.status === "success"){
+      successOTP('r');
+      setHint('resetOtpHint','ok','Password updated! Redirecting...');
+
+      setTimeout(()=>{
+        window.location.href = "dashboard.html";
+      },1000);
+    } else {
+      setHint('resetOtpHint','err','Failed to update password.');
+    }
+  })
+  .catch(err=>{
+    console.error(err);
+    setHint('resetOtpHint','err','Server error.');
+  });
+}
+/* ══ COUNTDOWN ══ */
+function startCountdown(){
+  clearInterval(countdownTimer);
+  let secs=300;
+  document.getElementById('resendBtn').classList.remove('show');
+  function tick(){
+    const m=String(Math.floor(secs/60)).padStart(2,'0');
+    const s=String(secs%60).padStart(2,'0');
+    const el=document.getElementById('countdown');
+    if(el) el.textContent=m+':'+s;
+    if(secs<=0){clearInterval(countdownTimer);document.getElementById('resendBtn').classList.add('show');}
+    secs--;
+  }
+  tick(); countdownTimer=setInterval(tick,1000);
+}
+
+/* ══ HELPERS ══ */
+function showErr(msg){document.getElementById('errText').textContent=msg;document.getElementById('errBox').style.display='flex';}
+function showOK(msg){document.getElementById('okText').textContent=msg;document.getElementById('okBox').style.display='flex';}
+
+function loginSuccess(user){
+  localStorage.setItem('mg_loggedin','true');
+  localStorage.setItem('mg_user',JSON.stringify(user));
+  showOK('Welcome back, '+(user.firstName||user.name)+'! Taking you to your dashboard…');
+  setTimeout(()=>window.location.href='dashboard.html',1500);
+}
+
+function demoLogin(){
+  loginSuccess({name:'Demo User',firstName:'Demo',email:'demo@mindguard.ai'});
+}
+
+document.getElementById('emailModal').addEventListener('click',function(e){
+  if(e.target===this) closeEmailModal();
+});
+</script>
+</body>
+</html>

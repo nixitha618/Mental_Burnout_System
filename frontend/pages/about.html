@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — MindGuard AI</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#07070f;
+  --card:#10101a;
+  --border:rgba(255,255,255,0.07);
+  --accent:#7c5cfc;
+  --accent2:#00e5c3;
+  --text:#eeeef8;
+  --muted:#5e5e80;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+}
+
+/* BACKGROUND GLOW */
+.bg-glow{
+  position:fixed;
+  width:700px;
+  height:700px;
+  background:radial-gradient(circle,rgba(124,92,252,0.15),transparent 70%);
+  top:20%;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:-1;
+}
+
+/* NAV */
+nav{
+  display:flex;
+  justify-content:space-between;
+  padding:1.2rem 3rem;
+  border-bottom:1px solid var(--border);
+}
+
+.logo{
+  font-family:'Syne',sans-serif;
+  font-weight:800;
+}
+
+.btn{
+  padding:0.5rem 1.2rem;
+  background:var(--accent);
+  border-radius:8px;
+  color:white;
+  text-decoration:none;
+}
+
+/* HERO */
+.hero{
+  text-align:center;
+  padding:5rem 2rem;
+}
+
+.hero h1{
+  font-family:'Syne',sans-serif;
+  font-size:3.2rem;
+}
+
+.grad{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.hero p{
+  max-width:600px;
+  margin:1rem auto;
+  color:var(--muted);
+}
+
+/* STATS */
+.stats{
+  display:flex;
+  justify-content:center;
+  gap:3rem;
+  margin-top:3rem;
+}
+
+.stat{
+  text-align:center;
+}
+
+.stat h2{
+  font-family:'Syne',sans-serif;
+  font-size:2rem;
+  color:var(--accent2);
+}
+
+.stat p{
+  font-size:0.8rem;
+  color:var(--muted);
+}
+
+/* SECTION */
+.section{
+  padding:4rem 2rem;
+  max-width:1100px;
+  margin:auto;
+}
+
+.title{
+  font-family:'Syne',sans-serif;
+  font-size:2rem;
+  margin-bottom:1.5rem;
+}
+
+/* FEATURES */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:1rem;
+}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:1.5rem;
+  transition:0.3s;
+}
+
+.card:hover{
+  transform:translateY(-6px) scale(1.02);
+  border-color:var(--accent);
+}
+
+.card h3{margin-bottom:0.5rem;}
+.card p{color:var(--muted);font-size:0.85rem;}
+
+/* ARCH FLOW */
+.arch{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:1rem;
+  margin-top:2rem;
+}
+
+.arch-box{
+  flex:1;
+  min-width:150px;
+  background:var(--card);
+  padding:1rem;
+  border-radius:12px;
+  text-align:center;
+  border:1px solid var(--border);
+  transition:0.3s;
+}
+
+.arch-box:hover{
+  border-color:var(--accent2);
+  transform:translateY(-5px);
+}
+
+.arrow{
+  font-size:1.5rem;
+  color:var(--accent);
+}
+
+/* TECH STACK */
+.tech{
+  display:flex;
+  flex-wrap:wrap;
+  gap:0.6rem;
+}
+
+.chip{
+  padding:0.4rem 1rem;
+  border-radius:20px;
+  background:rgba(124,92,252,0.1);
+  border:1px solid rgba(124,92,252,0.2);
+  font-size:0.8rem;
+}
+
+/* FOOTER */
+.footer{
+  text-align:center;
+  padding:2rem;
+  color:var(--muted);
+}
+
+/* ANIMATION */
+.fade{
+  opacity:0;
+  transform:translateY(20px);
+  transition:1s;
+}
+
+.fade.show{
+  opacity:1;
+  transform:none;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="bg-glow"></div>
+
+<nav>
+  <div class="logo">🧠 MindGuard AI</div>
+  <a href="index.html" class="btn">Home</a>
+</nav>
+
+<section class="hero fade">
+  <h1>About <span class="grad">MindGuard AI</span></h1>
+  <p>
+    A smart AI system that predicts mental burnout early and provides personalized
+    guidance to maintain a healthy lifestyle.
+  </p>
+
+  <div class="stats">
+    <div class="stat">
+      <h2 id="s1">0</h2>
+      <p>Accuracy</p>
+    </div>
+    <div class="stat">
+      <h2 id="s2">0</h2>
+      <p>Users</p>
+    </div>
+    <div class="stat">
+      <h2 id="s3">0</h2>
+      <p>Predictions</p>
+    </div>
+  </div>
+</section>
+
+<section class="section fade">
+  <h2 class="title">✨ Features</h2>
+  <div class="grid">
+    <div class="card"><h3>🧠 Prediction</h3><p>ML detects burnout early</p></div>
+    <div class="card"><h3>📊 Explainability</h3><p>Shows key factors</p></div>
+    <div class="card"><h3>🤖 AI Guidance</h3><p>Personalized help</p></div>
+    <div class="card"><h3>📈 Dashboard</h3><p>Visual insights</p></div>
+  </div>
+</section>
+
+<section class="section fade">
+  <h2 class="title">⚙️ Architecture</h2>
+  <div class="arch">
+    <div class="arch-box">📥 Input</div>
+    <div class="arrow">➡</div>
+    <div class="arch-box">⚙ ML</div>
+    <div class="arrow">➡</div>
+    <div class="arch-box">📊 Explain</div>
+    <div class="arrow">➡</div>
+    <div class="arch-box">🤖 AI</div>
+  </div>
+</section>
+
+<section class="section fade">
+  <h2 class="title">🚀 Tech Stack</h2>
+  <div class="tech">
+    <div class="chip">FastAPI</div>
+    <div class="chip">Scikit-learn</div>
+    <div class="chip">XGBoost</div>
+    <div class="chip">LangChain</div>
+    <div class="chip">ChromaDB</div>
+    <div class="chip">Gemini</div>
+    <div class="chip">JavaScript</div>
+  </div>
+</section>
+
+<div class="footer">
+  Built with ❤️ for Mental Wellness
+</div>
+
+<script>
+/* COUNTER ANIMATION */
+function animate(id, end){
+  let i=0;
+  let interval=setInterval(()=>{
+    i+=Math.ceil(end/50);
+    if(i>=end){i=end;clearInterval(interval);}
+    document.getElementById(id).innerText=i;
+  },20);
+}
+
+animate("s1",87);
+animate("s2",1000);
+animate("s3",5000);
+
+/* SCROLL ANIMATION */
+const fades=document.querySelectorAll('.fade');
+window.addEventListener('scroll',()=>{
+  fades.forEach(el=>{
+    const rect=el.getBoundingClientRect();
+    if(rect.top<window.innerHeight-50){
+      el.classList.add('show');
+    }
+  });
+});
+</script>
+
+</body>
+</html>

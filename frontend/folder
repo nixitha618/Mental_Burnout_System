@@ -1,0 +1,175 @@
+/* ai-burnout-early-warning-system/
+│
+├── .env                      # Environment variables (API keys, DB paths)
+├── .gitignore                # Files/folders to ignore in git (e.g., __pycache__, .env, data/)
+├── README.md                 # Project overview, setup instructions
+├── requirements.txt          # Python dependencies for the entire project
+├── pyproject.toml            # (Optional) Modern dependency management
+│
+├── data/                     # All data-related files
+│   ├── raw/                  # Original, immutable data dumps
+│   │   └── sample_user_data.csv
+│   ├── processed/            # Cleaned data for model training
+│   │   └── training_data.parquet
+│   └── vector_db/            # Persistent storage for ChromaDB (RAG knowledge base)
+│       └── (chroma db files)
+│
+├── models/                   # Saved ML models and vector store indices
+│   ├── burnout_model.pkl     # Trained scikit-learn / XGBoost model
+│   ├── label_encoder.pkl     # (If any) Encoders for categorical features
+│   └── scaler.pkl            # (If any) Fitted scaler for normalization
+│
+├── notebooks/                # Jupyter notebooks for EDA, training, experimentation
+│   ├── 01_eda_and_visualization.ipynb
+│   ├── 02_model_training_comparison.ipynb
+│   └── 03_rag_pipeline_testing.ipynb
+│
+├── src/                      # Main source code package
+│   ├── __init__.py
+│   │
+│   ├── config/               # Configuration management
+│   │   ├── __init__.py
+│   │   └── settings.py       # Loads settings from .env and defines constants
+│   │
+│   ├── data_pipeline/        # Data processing and feature engineering
+│   │   ├── __init__.py
+│   │   ├── collector.py      # Simulates/collects input data (sleep, workload, etc.)
+│   │   ├── preprocessor.py   # Cleans, normalizes, and prepares features for ML
+│   │   └── features.py       # Defines feature names and engineering logic
+│   │
+│   ├── ml/                   # Machine Learning Core
+│   │   ├── __init__.py
+│   │   ├── trainer.py        # Script to train/retrain models (LogReg, RF, XGBoost)
+│   │   ├── predictor.py      # Loads model and predicts burnout risk (Low, Medium, High)
+│   │   └── explainer.py      # Explainable AI: Feature importance (e.g., permutation importance, SHAP)
+│   │
+│   ├── rag/                  # Retrieval-Augmented Generation (Guidance System)
+│   │   ├── __init__.py
+│   │   ├── knowledge_base.py # Creates and manages the vector database (ChromaDB) with wellness resources
+│   │   ├── retriever.py      # Finds relevant context based on user query + burnout factors
+│   │   └── generator.py      # Uses HuggingFace Transformers to generate final guidance
+│   │
+│   ├── api/                  # Backend API (FastAPI)
+│   │   ├── __init__.py
+│   │   ├── routes.py         # Defines API endpoints (/predict, /explain, /guidance)
+│   │   └── schemas.py        # Pydantic models for request/response validation
+│   │
+│   └── utils/                # Utility functions
+│       ├── __init__.py
+│       └── logger.py         # Logging configuration
+│
+├── tests/                    # Unit and integration tests
+│   ├── __init__.py
+│   ├── test_ml.py
+│   ├── test_rag.py
+│   └── test_api.py
+│
+├── frontend/                 # Web-based User Interface
+│   ├── index.html            # Main HTML page
+│   ├── css/
+│   │   └── style.css
+│   ├── js/
+│   │   └── main.js           # JavaScript to call API and render charts
+│   └── assets/               # Images, icons, etc.
+│
+└── scripts/                  # One-off scripts for setup, data ingestion
+    ├── ingest_knowledge.py   # Script to load wellness articles into ChromaDB
+    └── train_model.py        # Script to train and save the ML model */
+
+
+    pip install chromadb langchain sentence-transformers transformers
+pip install pytest pytest-asyncio
+pip install sqlalchemy aiosqlite
+pip install python-jose[cryptography] passlib[bcrypt] 
+
+# 2. Run tests (optional)
+pytest tests/ -v
+
+# 3. Start the enhanced API
+python -m src.api.main
+async function handleSendReport() {
+  const userId = localStorage.getItem('burnout_user_id');
+  const emailInput = document.getElementById('userEmail');
+
+  // 👉 Get both values clearly
+  const registeredEmail = localStorage.getItem('mg_email');
+  const enteredEmail = emailInput && emailInput.value.trim();
+
+  // 👉 Decide final email used
+  const email = registeredEmail;
+  
+
+  // 🔍 DEBUG LOGS (ADD HERE)
+  console.log("📌 Registered Email (localStorage):", registeredEmail);
+  console.log("📌 Entered Email (input):", enteredEmail);
+  console.log("📌 Final Email Used:", email);
+
+  // 🚨 1. Check email exists
+  if (!email) {
+    showNotification('⚠️ Enter and subscribe your email first.', 'warning');
+    return;
+  }
+
+  // 🚨 2. Check backend session
+  if (!userId || userId.startsWith('LOCAL_')) {
+    showNotification('⚠️ Backend must be running to send a report.', 'warning');
+    return;
+  }
+
+  const sendBtn = document.getElementById('sendReportBtn');
+  const orig = sendBtn.innerHTML;
+  sendBtn.disabled = true;
+  sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+  try {
+    // 🚨 3. VERIFY USER EMAIL FROM BACKEND
+    const userResp = await fetch(`${API_BASE_URL}/user/${encodeURIComponent(userId)}`);
+    const userData = await userResp.json();
+
+    console.log("📌 Backend Email:", userData.email); // 🔍 DEBUG
+
+    if (!userResp.ok) {
+      throw new Error("Failed to verify user");
+    }
+
+    // 🚨 4. SAFE COMPARISON (CASE-INSENSITIVE)
+    if (
+      !userData.email ||
+      userData.email.trim().toLowerCase() !== email.trim().toLowerCase()
+    ) {
+      showNotification('❌ Use your registered login email only!', 'warning');
+      sendBtn.disabled = false;
+      sendBtn.innerHTML = orig;
+      return;
+    }
+
+    // 🚀 5. SEND REPORT
+    const response = await fetch(
+      `${API_BASE_URL}/send/weekly-report?user_id=${encodeURIComponent(userId)}`,
+      { method: 'POST' }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok || result.status !== 'success') {
+      throw new Error(result.message || 'Failed to send report');
+    }
+
+    showNotification('✅ Weekly report sent to ' + email + '!', 'success');
+    setEmailStatus(
+      '<i class="fas fa-paper-plane"></i> Report sent to ' + email,
+      'var(--accent2)'
+    );
+
+  } catch (e) {
+    console.error('Send report error:', e);
+    showNotification('❌ ' + e.message, 'warning');
+    setEmailStatus(
+      '<i class="fas fa-times-circle"></i> Failed: ' + e.message,
+      'var(--high)'
+    );
+  } finally {
+    sendBtn.disabled = false;
+    sendBtn.innerHTML = orig;
+  }
+}

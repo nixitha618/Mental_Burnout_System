@@ -1,0 +1,25 @@
+# Virtual env
+.env/
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+logs/
+
+# Database
+*.db
+
+# Models / heavy files
+models/
+*.pkl
+*.h5
+
+# OS files
+.DS_Store
+data/vector_db/
