@@ -204,6 +204,7 @@ Open `frontend/pages/index.html` in your browser or use Live Server.
 **Unta Nixitha**
 📧 [nixitha51@gmail.com](mailto:nixitha51@gmail.com)
 🔗 https://github.com/nixitha618
+Project repository link: https://github.com/nixitha618/Mental_Burnout_System
 
 ---
 
