@@ -49,7 +49,7 @@ An AI-powered web application that detects early signs of mental burnout using m
 
 ### Database
 
-*SQLite
+* SQLite
 
 ### 🔹 Other Integrations
 
