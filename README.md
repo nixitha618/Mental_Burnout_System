@@ -47,6 +47,10 @@ An AI-powered web application that detects early signs of mental burnout using m
 
 * HTML, CSS, JavaScript
 
+### Database
+
+*SQLite
+
 ### 🔹 Other Integrations
 
 * SMTP (Email Notification System)
