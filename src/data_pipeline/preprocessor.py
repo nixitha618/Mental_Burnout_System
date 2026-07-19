@@ -188,8 +188,8 @@ class DataPreprocessor:
         if not SCALER_PATH.exists():
             raise FileNotFoundError(f"Scaler not found at {SCALER_PATH}. Please train the model first.")
         
-        # Load scaler if not already loaded
-        if not hasattr(self, 'scaler') or self.scaler is None:
+        # Load scaler if not already loaded or not fitted
+        if not hasattr(self, 'scaler') or self.scaler is None or not hasattr(self.scaler, 'mean_'):
             self.scaler = joblib.load(SCALER_PATH)
         
         # Scale features

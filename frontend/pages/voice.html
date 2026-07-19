@@ -7,6 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
+    html{font-size:18px;}
     :root{--bg:#07070f;--card:#10101a;--card2:#16161f;--border:rgba(255,255,255,0.07);--accent:#7c5cfc;--accent2:#00e5c3;--accent3:#ff6b6b;--warn:#ffc542;--text:#eeeef8;--muted:#5e5e80;}
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;}
@@ -286,7 +287,7 @@
       const data=JSON.parse(evt.data);
       if(data.type==='status'){const labels={ready:'Hold to speak…',transcribing:'Transcribing…',thinking:'AI is thinking…',speaking:'AI is speaking…',history_cleared:'Conversation cleared ✓'};setUI(data.state||'ready',labels[data.state]||data.text);}
       else if(data.type==='transcript'){removeTyping();addMsg('user',data.text);showTyping();}
-      else if(data.type==='response'){removeTyping();addMsg('assistant',data.text); speakText(data.text);
+      else if(data.type==='response'){removeTyping();addMsg('assistant',data.text);
     }
       else if(data.type==='error'){removeTyping();const d=document.createElement('div');d.className='msg error-msg';d.textContent='⚠️ '+data.text;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;setUI('ready','Hold to speak…');}
     };

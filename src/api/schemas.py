@@ -42,6 +42,8 @@ class BurnoutExplanation(BaseModel):
     concerning_factors: List[Dict]
     recommendations: List[str]
     global_feature_importance: Dict[str, float]
+    local_feature_importance: Optional[Dict[str, float]] = None
+    importance: Optional[Dict[str, float]] = None
 
 class GuidanceQuery(BaseModel):
     """Input schema for guidance query"""

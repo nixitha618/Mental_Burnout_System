@@ -8,17 +8,28 @@ import sys
 import os
 import subprocess
 
-try:
-    import pysqlite3
-    sys.modules['sqlite3'] = pysqlite3
-    print("✅ SQLite fix applied")
-except ImportError:
-    print("⚠️ Installing pysqlite3-binary...")
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "pysqlite3-binary"])
-    import pysqlite3
-    sys.modules['sqlite3'] = pysqlite3
-    print("✅ SQLite fix applied after installation")
+# try:
+#     import pysqlite3
+#     sys.modules['sqlite3'] = pysqlite3
+#     print("✅ SQLite fix applied")
+# except ImportError:
+#     print("⚠️ Installing pysqlite3-binary...")
+#     subprocess.check_call([sys.executable, "-m", "pip", "install", "pysqlite3-binary"])
+#     import pysqlite3
+#     sys.modules['sqlite3'] = pysqlite3
+#     print("✅ SQLite fix applied after installation")
 
+if sys.platform.startswith("linux"):
+    try:
+        import pysqlite3
+        sys.modules['sqlite3'] = pysqlite3
+    except ImportError:
+        print("⚠️ Installing pysqlite3-binary...")
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "pysqlite3-binary"])
+        import pysqlite3
+        sys.modules['sqlite3'] = pysqlite3
+else:
+    print("ℹ️ Skipping pysqlite3 override (not needed on this platform)")
 import sqlite3
 print(f"📊 SQLite version: {sqlite3.sqlite_version}")
 # ======================================

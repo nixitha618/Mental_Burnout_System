@@ -20,7 +20,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         .header {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            background: {% if risk_level == 'High' or not risk_level %}linear-gradient(135deg, #ef4444 0%, #dc2626 100%){% elif risk_level == 'Medium' %}linear-gradient(135deg, #ffc542 0%, #e2ab17 100%){% else %}linear-gradient(135deg, #10b981 0%, #059669 100%){% endif %};
             color: white;
             padding: 30px;
             text-align: center;
@@ -41,8 +41,7 @@
             margin-bottom: 20px;
         }
         .alert-box {
-            background: #fee2e2;
-            border-left: 4px solid #ef4444;
+            background: {% if risk_level == 'High' or not risk_level %}#fee2e2; border-left: 4px solid #ef4444;{% elif risk_level == 'Medium' %}#fffbeb; border-left: 4px solid #ffc542;{% else %}#ecfdf5; border-left: 4px solid #10b981;{% endif %};
             padding: 20px;
             margin: 20px 0;
             border-radius: 10px;
@@ -51,7 +50,7 @@
         .risk-score {
             font-size: 56px;
             font-weight: bold;
-            color: #ef4444;
+            color: {% if risk_level == 'High' or not risk_level %}#ef4444{% elif risk_level == 'Medium' %}#d97706{% else %}#059669{% endif %};
             margin: 10px 0;
         }
         .risk-label {
@@ -170,8 +169,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>⚠️ High Burnout Risk Alert</h1>
-            <p>Immediate Attention Recommended</p>
+            <h1>{% if risk_level == 'High' or not risk_level %}🚨 High Burnout Risk Alert{% elif risk_level == 'Medium' %}⚠️ Medium Burnout Risk Report{% else %}✅ Low Burnout Risk Report{% endif %}</h1>
+            <p>{% if risk_level == 'High' or not risk_level %}Immediate Attention Recommended{% else %}Wellness Status Update{% endif %}</p>
         </div>
         
         <div class="content">
@@ -180,7 +179,7 @@
             </div>
             
             <div class="alert-box">
-                <p><strong>Your recent assessment shows a HIGH risk of burnout!</strong></p>
+                <p><strong>Your recent assessment shows a {% if risk_level %}{{ risk_level.upper() }}{% else %}HIGH{% endif %} risk of burnout!</strong></p>
                 <div class="risk-score">{{ risk_score }}%</div>
                 <div class="risk-label">Burnout Risk Score</div>
             </div>
@@ -213,34 +212,81 @@
                 </div>
             </div>
             
-            <div class="factor-list">
-                <strong>⚠️ Concerning Factors</strong>
-                <ul>
+            {% if risk_level == 'High' or not risk_level %}
+            {% if concerning_factors %}
+            <div class="factor-list" style="background: #fee2e2; border-left: 4px solid #ef4444;">
+                <strong style="color: #ef4444;">⚠️ Concerning Factors</strong>
+                <ul style="margin: 10px 0 0 20px;">
                     {% for factor in concerning_factors %}
-                    <li><strong>{{ factor.factor }}:</strong> {{ factor.message }}</li>
+                    <li style="margin: 8px 0;"><strong>{{ factor.factor }}:</strong> {{ factor.message }}</li>
                     {% endfor %}
                 </ul>
             </div>
+            {% endif %}
             
             <div class="action-buttons">
-                <a href="{{ dashboard_url }}" class="btn-primary">View Full Report</a>
+                <a href="{{ dashboard_url }}" class="btn-primary" style="background: #ef4444;">View Full Report</a>
                 <a href="{{ guidance_url }}" class="btn-secondary">Get AI Guidance</a>
             </div>
             
-            <div class="support-box">
-                <h4>📞 Immediate Actions You Can Take</h4>
-                <ul>
-                    <li>Take a 15-minute break right now</li>
-                    <li>Practice deep breathing exercises (4-7-8 technique)</li>
-                    <li>Talk to a trusted friend or family member</li>
-                    <li>Go for a short walk outside</li>
-                    <li>Consider speaking with a mental health professional</li>
+            <div class="support-box" style="background: #fee2e2; border-left: 4px solid #ef4444;">
+                <h4 style="color: #b91c1c;">📞 Immediate Actions You Can Take</h4>
+                <ul style="padding-left: 20px;">
+                    <li style="margin: 8px 0;">Take a 15-minute break right now</li>
+                    <li style="margin: 8px 0;">Practice deep breathing exercises (4-7-8 technique)</li>
+                    <li style="margin: 8px 0;">Talk to a trusted friend or family member</li>
+                    <li style="margin: 8px 0;">Go for a short walk outside</li>
+                    <li style="margin: 8px 0;">Consider speaking with a mental health professional</li>
                 </ul>
             </div>
             
             <div class="disclaimer">
                 <strong>⚠️ Crisis Support:</strong> If you're in crisis or having thoughts of harming yourself, please contact emergency services immediately or call a crisis helpline.
             </div>
+
+            {% elif risk_level == 'Medium' %}
+            {% if concerning_factors %}
+            <div class="factor-list" style="background: #fffbeb; border-left: 4px solid #ffc542;">
+                <strong style="color: #d97706;">⚠️ Concerning Factors</strong>
+                <ul style="margin: 10px 0 0 20px;">
+                    {% for factor in concerning_factors %}
+                    <li style="margin: 8px 0;"><strong>{{ factor.factor }}:</strong> {{ factor.message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            
+            <div class="action-buttons">
+                <a href="{{ dashboard_url }}" class="btn-primary" style="background: #ffc542; color: #333;">View Full Report</a>
+                <a href="{{ guidance_url }}" class="btn-secondary">Get AI Guidance</a>
+            </div>
+            
+            <div class="support-box" style="background: #fffbeb; border-left: 4px solid #ffc542;">
+                <h4 style="color: #b45309;">💡 Recommended Actions to Reduce Burnout Risk</h4>
+                <ul style="padding-left: 20px;">
+                    <li style="margin: 8px 0;">Try scheduling regular micro-breaks during work</li>
+                    <li style="margin: 8px 0;">Set aside dedicated screen-free time in the evening</li>
+                    <li style="margin: 8px 0;">Ensure you get at least 20-30 minutes of physical activity daily</li>
+                    <li style="margin: 8px 0;">Reach out for social support or chat with team members</li>
+                </ul>
+            </div>
+
+            {% else %}
+            <div class="action-buttons">
+                <a href="{{ dashboard_url }}" class="btn-primary" style="background: #10b981;">View Full Report</a>
+                <a href="{{ guidance_url }}" class="btn-secondary">Get AI Guidance</a>
+            </div>
+            
+            <div class="support-box" style="background: #ecfdf5; border-left: 4px solid #10b981;">
+                <h4 style="color: #047857;">🎉 Healthy Habits & Wellness Tips to Maintain Balance</h4>
+                <ul style="padding-left: 20px;">
+                    <li style="margin: 8px 0;">Continue prioritizing 7-8 hours of sleep nightly</li>
+                    <li style="margin: 8px 0;">Maintain regular active physical exercise routines</li>
+                    <li style="margin: 8px 0;">Keep setting clear work-life boundaries</li>
+                    <li style="margin: 8px 0;">Practice gratitude or mindfulness to keep stress low</li>
+                </ul>
+            </div>
+            {% endif %}
         </div>
         
         <div class="footer">

@@ -30,8 +30,8 @@ class User(Base):
             'id': self.user_id,
             'name': self.name,
             'email': self.email,
-            'created_at': self.created_at.isoformat() if self.created_at else None,
-            'last_active': self.last_active.isoformat() if self.last_active else None
+            'created_at': self.created_at.isoformat() + "Z" if self.created_at else None,
+            'last_active': self.last_active.isoformat() + "Z" if self.last_active else None
         }
 
 class Assessment(Base):
@@ -66,7 +66,7 @@ class Assessment(Base):
     def to_dict(self):
         return {
             'id': self.id,
-            'date': self.assessment_date.isoformat() if self.assessment_date else None,
+            'date': self.assessment_date.isoformat() + "Z" if self.assessment_date else None,
             'sleep_hours': self.sleep_hours,
             'workload_hours': self.workload_hours,
             'stress_level': self.stress_level,

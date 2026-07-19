@@ -120,7 +120,9 @@ async def explain_prediction(
             explanation=explanation['explanation'],
             concerning_factors=explanation['concerning_factors'],
             recommendations=explanation['recommendations'],
-            global_feature_importance=explanation['global_feature_importance']
+            global_feature_importance=explanation['global_feature_importance'],
+            local_feature_importance=explanation.get('local_feature_importance'),
+            importance=explanation.get('importance')
         )
     except Exception as e:
         logger.error(f"❌ Explanation failed: {e}")
@@ -221,6 +223,20 @@ async def get_history(user_id: str, limit: int = 10):
         return {"user_id": user_id, "history": history, "statistics": stats}
     except Exception as e:
         logger.error(f"Failed to get history: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/history/clear/{user_id}")
+async def clear_history(user_id: str):
+    try:
+        db = get_db()
+        try:
+            db.session.rollback()
+        except Exception:
+            pass
+        success = db.clear_user_history(user_id)
+        return {"status": "success" if success else "failed", "message": "History cleared successfully" if success else "Failed to clear history"}
+    except Exception as e:
+        logger.error(f"Failed to clear history: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/trend/{user_id}")
@@ -360,6 +376,28 @@ async def subscribe_user(
     except Exception as e:
         logger.error(f"Failed to subscribe: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/user/subscription/{user_id}")
+async def get_user_subscription(user_id: str):
+    try:
+        subscriptions = {}
+        try:
+            with open('data/subscriptions.json', 'r') as f:
+                subscriptions = json.load(f)
+        except Exception:
+            pass
+        
+        subscription_key = f"sub_{user_id}"
+        sub = subscriptions.get(subscription_key)
+        if not sub:
+            return {"status": "not_found", "subscribed": False}
+        return {"status": "success", "subscribed": True, "data": sub}
+    except Exception as e:
+        logger.error(f"Failed to get subscription: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 # @router.post("/user/subscribe")
 # async def subscribe_user(
 #     user_id: str,
@@ -426,18 +464,119 @@ async def subscribe_user(
 #         raise HTTPException(status_code=500, detail=str(e))
 
 @router.post("/send/weekly-report")
-async def send_weekly_report_to_user(user_id: str):
+async def send_weekly_report_to_user(
+    user_id: str,
+    receive_weekly: Optional[bool] = None,
+    receive_alerts: Optional[bool] = None
+):
     try:
+        import json
+        # Determine preferences
+        try:
+            if receive_weekly is None or receive_alerts is None:
+                with open('data/subscriptions.json', 'r') as f:
+                    subs = json.load(f)
+                entry = subs.get(f"sub_{user_id}", {})
+                if receive_weekly is None:
+                    receive_weekly = entry.get('receive_weekly', True) if entry else True
+                if receive_alerts is None:
+                    receive_alerts = entry.get('receive_alerts', True) if entry else True
+        except Exception:
+            if receive_weekly is None:
+                receive_weekly = True
+            if receive_alerts is None:
+                receive_alerts = True
+
+        if not receive_weekly and not receive_alerts:
+            return {
+                "status": "failed",
+                "message": "Both reports are disabled in your settings. Please check at least one checkbox, click Subscribe, and try again."
+            }
+            
         from src.services.email_service import get_email_service
         email_service = get_email_service()
-        success = email_service.send_weekly_report(user_id)
+        
+        sent_weekly = False
+        sent_recent = False
+        
+        # Send recent report if enabled
+        if receive_alerts:
+            db = get_db()
+            history = db.get_user_history(user_id, limit=1)
+            if history:
+                recent = history[0]
+                assessment_data = recent
+                prediction = {
+                    "risk_level": assessment_data.get("risk_level", "Medium"),
+                    "risk_score": assessment_data.get("risk_score", 50.0)
+                }
+                sent_recent = email_service.send_high_risk_alert(user_id, assessment_data, prediction, ignore_preferences=True)
+            else:
+                sent_recent = False
+        
+        # Send weekly report if enabled
+        if receive_weekly:
+            sent_weekly = email_service.send_weekly_report(user_id, ignore_preferences=True)
+            
+        # Determine success status and return message
+        if receive_weekly and receive_alerts:
+            success = sent_weekly and sent_recent
+            msg = "Both reports sent successfully as separate emails" if success else "No assessment history found. Please analyze your burnout risk in the dashboard first!"
+        elif receive_weekly:
+            success = sent_weekly
+            msg = "Weekly report sent successfully" if success else "No assessment history found. Please analyze your burnout risk in the dashboard first!"
+        else:
+            success = sent_recent
+            msg = "Recent assessment report sent successfully" if success else "No assessment history found. Please analyze your burnout risk in the dashboard first!"
+            
         return {
             "status": "success" if success else "failed",
-            "message": "Weekly report sent" if success else "Failed to send report"
+            "message": msg
         }
     except Exception as e:
         logger.error(f"Failed to send report: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/send/test-email")
+async def send_test_email(user_id: str):
+    try:
+        from src.services.email_service import get_email_service
+        email_service = get_email_service()
+        
+        # Resolve email
+        from src.services.email_service import _resolve_email
+        email = _resolve_email(user_id, email_service.db)
+        if not email:
+            raise HTTPException(status_code=400, detail="No subscribed email found for this user. Please subscribe first.")
+            
+        subject = "Test Email Verification"
+        html = f"""
+        <html>
+        <body style="font-family: Arial, sans-serif; background: #0b0b14; color: #ffffff; padding: 20px;">
+          <div style="max-width: 600px; margin: auto; background: #121224; border: 1px solid #7c5cfc; border-radius: 12px; padding: 30px; text-align: center; box-shadow: 0 4px 15px rgba(124, 92, 252, 0.15);">
+            <h2 style="color: #7c5cfc; margin-top: 0; font-family: 'DM Sans', sans-serif;">🧠 MindGuard AI</h2>
+            <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.08); margin: 20px 0;"/>
+            <p style="font-size: 1.1rem; color: #00e5c3; font-weight: bold; margin-bottom: 8px;">✅ SMTP Connection Active</p>
+            <p style="color: #a0a0c0; line-height: 1.6; font-size: 0.9rem;">This is a test email confirming that your email notification settings are correctly configured and SMTP is working perfectly.</p>
+            <div style="margin: 20px 0; padding: 10px 15px; background: rgba(0, 229, 195, 0.05); border: 1px solid rgba(0, 229, 195, 0.2); border-radius: 8px; display: inline-block;">
+              <span style="color: #00e5c3; font-weight: bold; font-size: 0.85rem;">Status: Verification Successful</span>
+            </div>
+            <p style="font-size: 0.75rem; color: #5e5e80; margin-top: 15px; margin-bottom: 0;">Sent on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} (Server Time)</p>
+          </div>
+        </body>
+        </html>
+        """
+        success = email_service.send_email(email, subject, html)
+        if not success:
+            raise HTTPException(status_code=500, detail="Failed to send test email. Check your SMTP configurations or credentials.")
+        return {"status": "success", "message": f"Test email sent successfully to {email}"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to send test email: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 
 # ✅ FIX: Accept body as JSON dict instead of query params + Dict mix
@@ -491,11 +630,15 @@ async def signup(user: UserSignup):
         return {
             "status": "success",
             "user_id": new_user.user_id,
-            "email": new_user.email
+            "email": new_user.email,
+            "name": new_user.name
         }
 
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 @router.post("/auth/login")
 async def login(user: UserLogin):
     try:
@@ -517,6 +660,35 @@ async def login(user: UserLogin):
             "name": db_user.name
         }
 
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/auth/otp-login")
+async def otp_login(payload: dict = Body(...)):
+    """
+    Find or create a user by email on successful OTP verification.
+    """
+    try:
+        email = payload.get("email")
+        if not email:
+            raise HTTPException(status_code=400, detail="Email is required")
+        
+        db = get_db()
+        user = db.session.query(User).filter_by(email=email).first()
+        if not user:
+            name = email.split('@')[0]
+            user = db.create_user(name=name, email=email)
+        
+        return {
+            "status": "success",
+            "user_id": user.user_id,
+            "email": user.email,
+            "name": user.name
+        }
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

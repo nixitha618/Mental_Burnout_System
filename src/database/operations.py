@@ -96,7 +96,7 @@ class DatabaseOps:
         
         return [
             {
-                'date': a.assessment_date.isoformat(),
+                'date': a.assessment_date.isoformat() + "Z",
                 'risk_score': a.risk_score,
                 'risk_level': a.risk_level
             }
@@ -127,10 +127,19 @@ class DatabaseOps:
                 'Medium': risk_levels.count('Medium'),
                 'High': risk_levels.count('High')
             },
-            'first_assessment': assessments[0].assessment_date.isoformat(),
-            'last_assessment': assessments[-1].assessment_date.isoformat()
+            'first_assessment': assessments[0].assessment_date.isoformat() + "Z",
+            'last_assessment': assessments[-1].assessment_date.isoformat() + "Z"
         }
     
+    def clear_user_history(self, user_id):
+        """Delete all assessments for a user"""
+        user = self.get_user(user_id)
+        if not user:
+            return False
+        self.session.query(Assessment).filter(Assessment.user_id == user.id).delete()
+        self.session.commit()
+        return True
+
     def close(self):
         """Close database session"""
         self.session.close()

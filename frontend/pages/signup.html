@@ -4,7 +4,7 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sign Up — MindGuard AI</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
     :root{--bg:#07070f;--card:#10101a;--card2:#16161f;--border:rgba(255,255,255,0.07);--accent:#7c5cfc;--accent2:#00e5c3;--text:#eeeef8;--muted:#5e5e80;}
@@ -12,14 +12,14 @@
     body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;}
 
     /* ── LEFT ── */
-    .left{flex:1;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:4rem;overflow:hidden;}
+    .left{flex:1;position:relative;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;padding:2.5rem 4rem 4rem;overflow:hidden;}
     .left::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 40%,rgba(124,92,252,0.12) 0%,transparent 65%),radial-gradient(ellipse at 70% 70%,rgba(0,229,195,0.08) 0%,transparent 60%);pointer-events:none;}
     .left-content{position:relative;z-index:1;text-align:center;max-width:400px;}
     .blob{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;opacity:0.15;}
     .blob1{width:220px;height:220px;background:var(--accent);top:-60px;left:-60px;}
     .blob2{width:180px;height:180px;background:var(--accent2);bottom:-40px;right:-40px;}
 
-    .logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.6rem;display:flex;align-items:center;justify-content:center;gap:0.6rem;margin-bottom:3rem;text-decoration:none;color:var(--text);}
+    .logo{font-family:'Outfit',sans-serif;font-weight:800;font-size:1.6rem;display:flex;align-items:center;justify-content:center;gap:0.6rem;margin-bottom:3rem;text-decoration:none;color:var(--text);letter-spacing:-0.03em;}
     .logo-box{width:38px;height:38px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:10px;display:flex;align-items:center;justify-content:center;}
     .logo em{color:var(--accent2);font-style:normal;}
 
@@ -27,7 +27,7 @@
     .fun-badge .dot{animation:pulse-dot 1.5s ease-in-out infinite;}
     @keyframes pulse-dot{0%,100%{opacity:1;}50%{opacity:0.3;}}
 
-    .left-content h2{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;margin-bottom:0.6rem;line-height:1.25;}
+    .left-content h2{font-family:'Outfit',sans-serif;font-size:2rem;font-weight:800;margin-bottom:0.6rem;line-height:1.25;letter-spacing:-0.02em;}
     .left-content h2 .hi{color:var(--accent2);}
     .left-content h2 .grad{background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
     .left-content .sub{color:var(--muted);font-size:0.88rem;margin-bottom:2.2rem;line-height:1.65;}
@@ -44,7 +44,7 @@
     .chk strong{color:var(--text);font-weight:500;}
 
     /* ── RIGHT ── */
-    .right{width:500px;display:flex;flex-direction:column;justify-content:center;padding:3rem 3.5rem;background:var(--card);border-left:1px solid var(--border);}
+    .right{width:500px;display:flex;flex-direction:column;justify-content:flex-start;padding:2.5rem 3.5rem 3rem;background:var(--card);border-left:1px solid var(--border);}
     .form-head{margin-bottom:1.75rem;}
     .form-head h1{font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:700;margin-bottom:0.4rem;}
     .form-head p{color:var(--muted);font-size:0.875rem;}
@@ -116,7 +116,7 @@
   <div class="blob blob1"></div>
   <div class="blob blob2"></div>
   <div class="left-content">
-    <a class="logo" href="../index.html"><div class="logo-box">🧠</div>Mind<em>Guard</em> AI</a>
+    <a class="logo" href="../index.html"><div class="logo-box">🧠</div><span>Mind<em>Guard</em> AI</span></a>
 
     <div class="fun-badge"><span class="dot">●</span> 12,400+ minds protected this week</div>
 
@@ -156,10 +156,10 @@
   <div class="err-box" id="errBox"><i class="fas fa-exclamation-circle"></i><span id="errText"></span></div>
   <div class="ok-box"  id="okBox"><i class="fas fa-check-circle"></i> Account created! Redirecting to dashboard...</div>
 
-  <form id="signupForm" novalidate>
+  <form id="signupForm" novalidate autocomplete="off">
     <div class="form-row">
-      <div class="field"><label>First Name</label><div class="inp-wrap"><i class="icon fas fa-user"></i><input type="text" id="fname" placeholder="John" required/></div></div>
-      <div class="field"><label>Last Name</label><div class="inp-wrap"><i class="icon fas fa-user"></i><input type="text" id="lname" placeholder="Doe" required/></div></div>
+      <div class="field"><label>First Name</label><div class="inp-wrap"><i class="icon fas fa-user"></i><input type="text" id="fname" placeholder="John" required autocomplete="off"/></div></div>
+      <div class="field"><label>Last Name</label><div class="inp-wrap"><i class="icon fas fa-user"></i><input type="text" id="lname" placeholder="Doe" required autocomplete="off"/></div></div>
     </div>
 
     <!-- Email -->
@@ -167,7 +167,7 @@
       <label>Email Address</label>
       <div class="inp-wrap">
         <i class="icon fas fa-envelope"></i>
-        <input type="email" id="email" placeholder="you@example.com" required
+        <input type="email" id="email" placeholder="you@example.com" required autocomplete="off"
           oninput="validateEmail(this.value)" onblur="validateEmailStrict(this.value)"/>
       </div>
       <div class="email-hint" id="emailHint"><i id="emailHintIcon" class="fas fa-info-circle"></i><span id="emailHintText"></span></div>
@@ -179,7 +179,7 @@
       <label>Password</label>
       <div class="inp-wrap">
         <i class="icon fas fa-lock"></i>
-        <input type="password" id="pass" class="has-eye" placeholder="Create a strong password" required
+        <input type="password" id="pass" class="has-eye" placeholder="Create a strong password" required autocomplete="new-password"
           oninput="onPassInput(this.value)" onfocus="showCriteria()" onblur="hideCriteria()"/>
         <button type="button" class="eye-btn" id="eyeBtn" onclick="toggleEye('pass','eyeBtn')"><i class="fas fa-eye"></i></button>
       </div>
@@ -208,7 +208,7 @@
       <label>Confirm Password</label>
       <div class="inp-wrap">
         <i class="icon fas fa-lock"></i>
-        <input type="password" id="pass2" class="has-eye" placeholder="Repeat your password" required oninput="checkMatch()"/>
+        <input type="password" id="pass2" class="has-eye" placeholder="Repeat your password" required autocomplete="new-password" oninput="checkMatch()"/>
         <button type="button" class="eye-btn" id="eyeBtn2" onclick="toggleEye('pass2','eyeBtn2')"><i class="fas fa-eye"></i></button>
       </div>
       <div class="str-meta" style="margin-top:0.35rem;"><span class="str-label" id="matchLabel"></span></div>
@@ -397,6 +397,13 @@ document.getElementById('signupForm').addEventListener('submit', async function(
       return
     }
 
+    localStorage.setItem('mg_user', JSON.stringify({
+      user_id: data.user_id,
+      email: data.email,
+      name: data.name || (fn + " " + ln)
+    }));
+    localStorage.setItem('mg_loggedin', 'true');
+
     document.getElementById('okBox').style.display = 'flex';
 
     setTimeout(()=>{
@@ -407,6 +414,16 @@ document.getElementById('signupForm').addEventListener('submit', async function(
     document.getElementById('errText').innerText = "Server error";
     document.getElementById('errBox').style.display = 'flex';
   }
+});
+
+// Force clear inputs on page load/refresh to bypass browser auto-fill
+window.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('signupForm').reset();
+  document.getElementById('fname').value = "";
+  document.getElementById('lname').value = "";
+  document.getElementById('email').value = "";
+  document.getElementById('pass').value = "";
+  document.getElementById('pass2').value = "";
 });
 
 </script>

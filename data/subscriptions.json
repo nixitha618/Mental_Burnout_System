@@ -131,5 +131,26 @@
         "receive_weekly": true,
         "receive_alerts": true,
         "subscribed_at": "2026-04-24T21:52:00.192638"
+    },
+    "sub_undefined": {
+        "user_id": "undefined",
+        "email": "demo@mindguard.ai",
+        "receive_weekly": true,
+        "receive_alerts": true,
+        "subscribed_at": "2026-07-13T23:17:16.582241"
+    },
+    "sub_USER_D30B54DA": {
+        "user_id": "USER_D30B54DA",
+        "email": "r210688@rguktrkv.ac.in",
+        "receive_weekly": true,
+        "receive_alerts": true,
+        "subscribed_at": "2026-07-14T18:39:38.156341"
+    },
+    "sub_USER_29D326A9": {
+        "user_id": "USER_29D326A9",
+        "email": "r210618@rguktrkv.ac.in",
+        "receive_weekly": false,
+        "receive_alerts": true,
+        "subscribed_at": "2026-07-17T12:35:46.068166"
     }
 }

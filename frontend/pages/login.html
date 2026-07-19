@@ -4,15 +4,16 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sign In — MindGuard AI</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
+    html{font-size:18px;}
     :root{--bg:#07070f;--card:#10101a;--card2:#16161f;--border:rgba(255,255,255,0.07);--accent:#7c5cfc;--accent2:#00e5c3;--text:#eeeef8;--muted:#5e5e80;}
     *{margin:0;padding:0;box-sizing:border-box;}
     body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;}
 
     /* LEFT */
-    .left{flex:1;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:4rem;overflow:hidden;}
+    .left{flex:1;position:relative;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;padding:2.5rem 4rem 4rem;overflow:hidden;}
     .left::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 40%,rgba(124,92,252,0.13) 0%,transparent 65%),radial-gradient(ellipse at 75% 75%,rgba(0,229,195,0.09) 0%,transparent 60%);pointer-events:none;}
     .blob{position:absolute;border-radius:50%;filter:blur(70px);pointer-events:none;opacity:0.13;}
     .blob1{width:260px;height:260px;background:var(--accent);top:-80px;left:-80px;animation:drift1 8s ease-in-out infinite alternate;}
@@ -20,10 +21,10 @@
     @keyframes drift1{to{transform:translate(30px,20px);}}
     @keyframes drift2{to{transform:translate(-20px,-25px);}}
     .left-content{position:relative;z-index:1;text-align:center;max-width:400px;}
-    .logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.6rem;display:flex;align-items:center;justify-content:center;gap:0.6rem;margin-bottom:2.5rem;text-decoration:none;color:var(--text);}
+    .logo{font-family:'Outfit',sans-serif;font-weight:800;font-size:1.6rem;display:flex;align-items:center;justify-content:center;gap:0.6rem;margin-bottom:2.5rem;text-decoration:none;color:var(--text);letter-spacing:-0.03em;}
     .logo-box{width:38px;height:38px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:10px;display:flex;align-items:center;justify-content:center;}
     .logo em{color:var(--accent2);font-style:normal;}
-    .greeting{font-family:'Syne',sans-serif;font-size:2.1rem;font-weight:800;line-height:1.2;margin-bottom:1.1rem;}
+    .greeting{font-family:'Outfit',sans-serif;font-size:2.1rem;font-weight:800;line-height:1.2;margin-bottom:1.1rem;letter-spacing:-0.02em;}
     .wave{display:inline-block;animation:wave-hand 2s ease-in-out infinite;}
     @keyframes wave-hand{0%,100%{transform:rotate(0deg);}20%{transform:rotate(20deg);}40%{transform:rotate(-10deg);}60%{transform:rotate(15deg);}80%{transform:rotate(-5deg);}}
     .grad{background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
@@ -45,7 +46,7 @@
     @keyframes ripple{0%{width:56px;height:56px;opacity:0.8;}100%{width:100px;height:100px;opacity:0;}}
 
     /* RIGHT */
-    .right{width:490px;display:flex;flex-direction:column;justify-content:center;padding:3rem 3.5rem;background:var(--card);border-left:1px solid var(--border);}
+    .right{width:490px;display:flex;flex-direction:column;justify-content:flex-start;padding:2.5rem 3.5rem 3rem;background:var(--card);border-left:1px solid var(--border);}
     .form-head{margin-bottom:1.6rem;}
     .form-head h1{font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:700;margin-bottom:0.4rem;}
     .form-head p{color:var(--muted);font-size:0.875rem;}
@@ -168,7 +169,7 @@
   <div class="blob blob1"></div>
   <div class="blob blob2"></div>
   <div class="left-content">
-    <a class="logo" href="../index.html"><div class="logo-box">🧠</div>Mind<em>Guard</em> AI</a>
+    <a class="logo" href="../index.html"><div class="logo-box">🧠</div><span>Mind<em>Guard</em> AI</span></a>
     <div class="pulse-ring-wrap"><div class="pulse-ring">🧠</div></div>
     <div class="greeting">
       Welcome back <span class="wave">👋</span><br>
@@ -213,12 +214,9 @@
       <label>Email Address</label>
       <div class="inp-wrap">
         <i class="icon fas fa-envelope"></i>
-        <input type="email" id="email" placeholder="you@example.com"
-          oninput="validateEmail(this.value,'emailHint','email')"
-          />
+        <input type="email" id="email" placeholder="you@example.com" autocomplete="off"/>
       </div>
       <div class="hint" id="emailHint"></div>
-      <div class="email-suggest" id="emailSuggest">Did you mean <button onclick="applyEmailSuggest()"><span id="suggestEmail"></span></button>?</div>
     </div>
 
     <!-- Password sub -->
@@ -227,7 +225,7 @@
         <label>Password</label>
         <div class="inp-wrap">
           <i class="icon fas fa-lock"></i>
-          <input type="password" id="password" class="has-eye" placeholder="••••••••" oninput="livePassCheck()"/>
+          <input type="password" id="password" class="has-eye" placeholder="••••••••" autocomplete="off"/>
           <button type="button" class="eye-btn" onclick="toggleEye('password','eyeIcon')"><i class="fas fa-eye" id="eyeIcon"></i></button>
         </div>
         <div class="hint" id="passHint"></div>
@@ -286,7 +284,7 @@
       <label>Registered Email</label>
       <div class="inp-wrap">
         <i class="icon fas fa-envelope"></i>
-        <input type="email" id="forgotEmail" placeholder="you@example.com"
+        <input type="email" id="forgotEmail" placeholder="you@example.com" autocomplete="off"
           oninput="validateEmail(this.value,'forgotHint','forgotEmail')"
           onblur="checkForgotEmail()"/>
       </div>
@@ -320,7 +318,7 @@
         <label>New Password</label>
         <div class="inp-wrap">
           <i class="icon fas fa-lock"></i>
-          <input type="password" id="newPassword" class="has-eye" placeholder="Create a new password" oninput="checkNewPass()"/>
+          <input type="password" id="newPassword" class="has-eye" placeholder="Create a new password" autocomplete="new-password" oninput="checkNewPass()"/>
           <button type="button" class="eye-btn" onclick="toggleEye('newPassword','newEyeIcon')"><i class="fas fa-eye" id="newEyeIcon"></i></button>
         </div>
         <div class="hint" id="newPassHint"></div>
@@ -596,6 +594,7 @@ function genOTP(){return String(Math.floor(100000+Math.random()*900000));}
 }
 /* ── Login OTP: generate email body with Claude API + show in-page modal ── */
 async function sendOTPWithPreview(em, otp, mode, user){
+  user = user || { name: em.split('@')[0] };
   let emailBody='', emailSubject='', emailGreeting='', emailBottom='';
   try{
     const resp = await fetch('https://api.anthropic.com/v1/messages',{
@@ -742,14 +741,26 @@ function verifyLoginOTP(){
 
   clearInterval(countdownTimer);
 
-  // ✅ FIX: create user object
-  const user = {
-    email: lastEmailAddr,
-    name: lastEmailAddr.split('@')[0],
-    user_id: "USER_" + Date.now()
-  };
-
-  setTimeout(()=>loginSuccess(user),800);
+  // Call backend to find or create the user under this email, so assessment history isn't lost.
+  fetch(`${API_BASE}/api/v1/auth/otp-login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email: lastEmailAddr })
+  })
+  .then(async res => {
+    const data = await res.json().catch(() => ({}));
+    if(!res.ok){
+      throw new Error(data.detail || "Authentication failed");
+    }
+    return data;
+  })
+  .then(data => {
+    setTimeout(()=>loginSuccess(data), 800);
+  })
+  .catch(err => {
+    shakeOTP('o');
+    setHint('otpHint', 'err', err.message || 'Server error. Please try again.');
+  });
 }
 function verifyResetOTP(){
   const entered = getOTP('r');
@@ -771,7 +782,7 @@ function verifyResetOTP(){
     return;
   }
 
-  fetch("http://localhost:8000/api/v1/reset_password", {
+  fetch(`${API_BASE}/api/v1/reset_password`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -782,10 +793,11 @@ function verifyResetOTP(){
     })
   })
   .then(async res => {
+    const data = await res.json().catch(() => ({}));
     if(!res.ok){
-      throw new Error("API not found or server error");
+      throw new Error(data.detail || "Reset failed");
     }
-    return res.json();
+    return data;
   })
   .then(data => {
     console.log("Reset response:", data);
@@ -803,7 +815,7 @@ function verifyResetOTP(){
   })
   .catch(err=>{
     console.error(err);
-    setHint('resetOtpHint','err','Server error.');
+    setHint('resetOtpHint','err', err.message || 'Server error.');
   });
 }
 /* ══ COUNTDOWN ══ */
@@ -823,8 +835,8 @@ function startCountdown(){
 }
 
 /* ══ HELPERS ══ */
-function showErr(msg){document.getElementById('errText').textContent=msg;document.getElementById('errBox').style.display='flex';}
-function showOK(msg){document.getElementById('okText').textContent=msg;document.getElementById('okBox').style.display='flex';}
+function showErr(msg){document.getElementById('okBox').style.display='none';document.getElementById('errText').textContent=msg;document.getElementById('errBox').style.display='flex';}
+function showOK(msg){document.getElementById('errBox').style.display='none';document.getElementById('okText').textContent=msg;document.getElementById('okBox').style.display='flex';}
 
 function loginSuccess(user){
   localStorage.setItem('mg_loggedin','true');
@@ -839,6 +851,18 @@ function demoLogin(){
 
 document.getElementById('emailModal').addEventListener('click',function(e){
   if(e.target===this) closeEmailModal();
+});
+
+// Force clear inputs on page load/refresh to bypass browser auto-fill
+window.addEventListener('DOMContentLoaded', () => {
+  if (document.getElementById('email')) document.getElementById('email').value = "";
+  if (document.getElementById('password')) document.getElementById('password').value = "";
+  if (document.getElementById('forgotEmail')) document.getElementById('forgotEmail').value = "";
+  if (document.getElementById('newPassword')) document.getElementById('newPassword').value = "";
+  for (let i = 0; i < 6; i++) {
+    if (document.getElementById('o' + i)) document.getElementById('o' + i).value = "";
+    if (document.getElementById('r' + i)) document.getElementById('r' + i).value = "";
+  }
 });
 </script>
 </body>

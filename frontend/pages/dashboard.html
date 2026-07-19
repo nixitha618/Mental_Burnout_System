@@ -4,10 +4,11 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard — MindGuard AI</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
+    html{font-size:18px;}
     /* Your existing CSS remains exactly the same - keeping all styles */
     :root{
       --bg:#07070f;--sidebar:#0b0b14;--card:#10101a;--card2:#16161f;
@@ -20,9 +21,9 @@
 
     /* ── SIDEBAR ── */
     .sidebar{width:230px;background:var(--sidebar);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:1.25rem 0;position:fixed;top:0;bottom:0;left:0;z-index:50;transition:transform 0.3s;}
-    .sb-logo{padding:0 1.25rem 1.75rem;display:flex;align-items:center;gap:0.65rem;font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;border-bottom:1px solid var(--border);padding-bottom:1.25rem;margin-bottom:0.75rem;}
+    .sb-logo{padding:0 1.25rem 1.75rem;display:flex;align-items:center;gap:0.65rem;font-family:'Outfit',sans-serif;font-weight:800;font-size:0.95rem;border-bottom:1px solid var(--border);padding-bottom:1.25rem;margin-bottom:0.75rem;letter-spacing:-0.03em;}
     .sb-logo-box{width:32px;height:32px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
-    .sb-logo em{color:var(--accent);font-style:normal;}
+    .sb-logo em{color:var(--accent2);font-style:normal;}
     .sb-section{padding:0 0.75rem;margin-bottom:1.5rem;}
     .sb-label{font-size:0.62rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);padding:0 0.5rem;margin-bottom:0.4rem;display:block;}
     .nav-btn{display:flex;align-items:center;gap:0.65rem;padding:0.6rem 0.75rem;border-radius:9px;color:var(--muted);text-decoration:none;font-size:0.84rem;font-weight:500;cursor:pointer;transition:all 0.18s;margin-bottom:0.15rem;border:1px solid transparent;background:none;width:100%;text-align:left;font-family:'DM Sans',sans-serif;}
@@ -68,13 +69,13 @@
 
     /* form inputs */
     .mets-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.875rem;margin-bottom:1.25rem;}
-    .met-item label{display:block;font-size:0.76rem;color:var(--muted);font-weight:500;margin-bottom:0.35rem;display:flex;align-items:center;justify-content:space-between;}
-    .met-item input[type=number]{width:100%;background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:0.6rem 0.8rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.88rem;outline:none;transition:border-color 0.2s;}
+    .met-item label{display:block;font-size:0.88rem;color:var(--muted);font-weight:500;margin-bottom:0.35rem;display:flex;align-items:center;justify-content:space-between;}
+    .met-item input[type=number]{width:100%;background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:0.6rem 0.8rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.98rem;outline:none;transition:border-color 0.2s;}
     .met-item input[type=number]:focus{border-color:var(--accent);}
     .met-item input[type=range]{width:100%;-webkit-appearance:none;height:5px;border-radius:3px;background:var(--card2);outline:none;cursor:pointer;border:1px solid var(--border);margin-top:0.35rem;}
     .met-item input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:17px;height:17px;border-radius:50%;background:var(--accent);border:2px solid var(--bg);cursor:pointer;}
-    .rv{font-weight:700;color:var(--accent);font-size:0.82rem;}
-    .analyze-btn{width:100%;padding:0.8rem;background:linear-gradient(135deg,var(--accent),#6040d8);border:none;border-radius:9px;color:white;font-family:'Syne',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:0.5rem;}
+    .rv{font-weight:700;color:var(--accent);font-size:0.92rem;}
+    .analyze-btn{width:100%;padding:0.8rem;background:linear-gradient(135deg,var(--accent),#6040d8);border:none;border-radius:9px;color:white;font-family:'Syne',sans-serif;font-size:1.0rem;font-weight:700;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:0.5rem;}
     .analyze-btn:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(124,92,252,0.35);}
     .analyze-btn:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
 
@@ -103,7 +104,7 @@
     /* ── GUIDANCE PAGE ── */
     .guid-layout{display:grid;grid-template-columns:1fr 290px;gap:1.25rem;}
     .quick-wrap{display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.1rem;}
-    .qbtn{padding:0.38rem 0.875rem;border:1px solid var(--border);border-radius:100px;background:var(--card2);color:var(--muted);font-size:0.78rem;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;}
+    .qbtn{padding:0.38rem 0.875rem;border:1px solid var(--border);border-radius:100px;background:var(--card2);color:var(--muted);font-size:0.88rem;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;}
     .qbtn:hover{border-color:var(--accent);color:var(--accent);}
     .chat-wrap{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:1.1rem;min-height:260px;max-height:380px;overflow-y:auto;display:flex;flex-direction:column;gap:0.875rem;margin-bottom:0.875rem;}
     .cmsg{display:flex;gap:0.6rem;align-items:flex-start;}
@@ -119,16 +120,16 @@
     .gen-tmpl{background:rgba(255,197,66,0.1);color:var(--warn);}
     .gen-err{background:rgba(255,107,107,0.1);color:var(--accent3);}
     .chat-row{display:flex;gap:0.6rem;}
-    .chat-in{flex:1;background:var(--card2);border:1px solid var(--border);border-radius:9px;padding:0.7rem 0.875rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.875rem;outline:none;transition:border-color 0.2s;}
+    .chat-in{flex:1;background:var(--card2);border:1px solid var(--border);border-radius:9px;padding:0.7rem 0.875rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.98rem;outline:none;transition:border-color 0.2s;}
     .chat-in:focus{border-color:var(--accent);}
     .chat-in::placeholder{color:var(--muted);}
-    .send-btn{padding:0.7rem 1.1rem;background:linear-gradient(135deg,var(--accent),#6040d8);border:none;border-radius:9px;color:white;cursor:pointer;font-size:0.82rem;font-weight:600;display:flex;align-items:center;gap:0.4rem;transition:all 0.2s;font-family:'DM Sans',sans-serif;}
+    .send-btn{padding:0.7rem 1.1rem;background:linear-gradient(135deg,var(--accent),#6040d8);border:none;border-radius:9px;color:white;cursor:pointer;font-size:0.92rem;font-weight:600;display:flex;align-items:center;gap:0.4rem;transition:all 0.2s;font-family:'DM Sans',sans-serif;}
     .send-btn:hover{transform:translateY(-1px);}
     .typing-row{display:flex;gap:4px;align-items:center;padding:0.2rem 0;}
     .typing-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:tdot 1.2s infinite;}
     .typing-dot:nth-child(2){animation-delay:.2s;}.typing-dot:nth-child(3){animation-delay:.4s;}
     @keyframes tdot{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-5px);}}
-    .ctx-row{display:flex;justify-content:space-between;align-items:center;padding:0.55rem 0;border-bottom:1px solid var(--border);font-size:0.82rem;}
+    .ctx-row{display:flex;justify-content:space-between;align-items:center;padding:0.55rem 0;border-bottom:1px solid var(--border);font-size:0.92rem;}
     .ctx-row:last-child{border:none;}
     .ctx-lbl{color:var(--muted);}
     .ctx-val{font-weight:600;}
@@ -137,14 +138,14 @@
     .ins-layout{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;}
     .factor-list{display:flex;flex-direction:column;gap:0.6rem;}
     .factor-row{display:flex;align-items:center;gap:0.875rem;padding:0.75rem 0.875rem;background:var(--card2);border:1px solid var(--border);border-radius:9px;}
-    .factor-ic{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:0.8rem;flex-shrink:0;}
-    .factor-nm{font-size:0.82rem;font-weight:500;flex:1;text-transform:capitalize;}
+    .factor-ic{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0;}
+    .factor-nm{font-size:0.92rem;font-weight:500;flex:1;text-transform:capitalize;}
     .factor-bar-bg{width:100px;height:5px;background:var(--card);border-radius:3px;overflow:hidden;}
     .factor-bar-f{height:100%;border-radius:3px;transition:width 0.6s;}
-    .factor-pct{font-size:0.72rem;font-weight:700;min-width:28px;text-align:right;}
+    .factor-pct{font-size:0.85rem;font-weight:700;min-width:28px;text-align:right;}
     .rec-list{display:flex;flex-direction:column;gap:0.5rem;}
-    .rec-row{display:flex;align-items:flex-start;gap:0.65rem;padding:0.7rem 0.875rem;background:var(--card2);border:1px solid var(--border);border-radius:9px;font-size:0.82rem;line-height:1.55;}
-    .rec-row i{color:var(--accent2);margin-top:0.1rem;flex-shrink:0;font-size:0.8rem;}
+    .rec-row{display:flex;align-items:flex-start;gap:0.65rem;padding:0.7rem 0.875rem;background:var(--card2);border:1px solid var(--border);border-radius:9px;font-size:0.92rem;line-height:1.55;}
+    .rec-row i{color:var(--accent2);margin-top:0.15rem;flex-shrink:0;font-size:0.9rem;}
 
     /* ── HISTORY PAGE ── */
     .hist-layout{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;}
@@ -197,6 +198,30 @@
     @keyframes spin{to{transform:rotate(360deg);}}
     #loadingOverlay p{font-size:0.9rem;color:var(--muted);}
 
+    /* ── MY ACCOUNT POPOVER (CHROME STYLE) ── */
+    .profile-popover {
+      position: fixed;
+      bottom: 75px;
+      left: 12px;
+      width: 280px;
+      background: #11111a;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px;
+      box-shadow: 0 12px 45px rgba(0,0,0,0.85), 0 0 0 1px rgba(255,255,255,0.06);
+      z-index: 1000;
+      animation: popIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    @keyframes popIn {
+      from { transform: translateY(10px) scale(0.95); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    .btn-copy:hover {
+      filter: brightness(1.2);
+    }
+
     @media(max-width:900px){.sidebar{transform:translateX(-100%);}.main{margin-left:0;}.dash-top,.ins-layout,.hist-layout,.about-layout,.guid-layout{grid-template-columns:1fr;}.dash-bot,.dash-mid{grid-template-columns:1fr;}.arch-grid{grid-template-columns:1fr 1fr;}.stats-row{grid-template-columns:1fr 1fr;}}
   </style>
 </head>
@@ -206,7 +231,7 @@
 <aside class="sidebar">
   <div class="sb-logo">
     <div class="sb-logo-box">🧠</div>
-    MindGuard</em> AI
+    <span>Mind<em>Guard</em> AI</span>
   </div>
 
   <div class="sb-section">
@@ -228,14 +253,16 @@
     <button class="nav-btn" onclick="showPage('about',this)"><i class="fas fa-info-circle"></i> About</button>
   </div>
 
-  <div class="sb-bottom">
-    <div class="user-pill">
-      <div class="user-av" id="sbAvatar">D</div>
-      <div class="user-av-info">
-        <div class="user-av-name" id="sbName">Demo User</div>
-        <div class="user-av-role">Free Account</div>
+  <div class="sb-bottom" style="position:relative;">
+    <div class="user-pill" style="cursor:pointer;" onclick="openAccountPopover()">
+      <div style="display:flex;align-items:center;gap:0.75rem;flex:1;" onclick="event.stopPropagation(); openAccountPopover();">
+        <div class="user-av" id="sbAvatar">D</div>
+        <div class="user-av-info">
+          <div class="user-av-name" id="sbName">Demo User</div>
+          <div class="user-av-role">Free Account</div>
+        </div>
       </div>
-      <button class="logout-icon" onclick="logout()" title="Logout"><i class="fas fa-sign-out-alt"></i></button>
+      <button class="logout-icon" onclick="event.stopPropagation(); logout();" title="Logout"><i class="fas fa-sign-out-alt"></i></button>
     </div>
   </div>
 </aside>
@@ -244,7 +271,21 @@
 <main class="main">
   <div class="topbar">
     <div class="topbar-title" id="topbarTitle">Dashboard</div>
-    <div class="topbar-right">
+    <div class="topbar-right" style="display:flex;align-items:center;gap:0.75rem;">
+      <div class="tz-container" style="display:flex;align-items:center;gap:0.35rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:0.3rem 0.5rem;font-size:0.75rem;">
+        <i class="fas fa-globe" style="color:var(--muted);"></i>
+        <select id="tzSelect" onchange="changeTimezone(this.value)" style="background:none;border:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.75rem;outline:none;cursor:pointer;">
+          <option value="default" style="background:#10101a;">System Time</option>
+          <option value="Asia/Kolkata" style="background:#10101a;">India (UTC+05:30) — Chennai, Kolkata, Mumbai, New Delhi</option>
+          <option value="UTC" style="background:#10101a;">UTC</option>
+          <option value="America/New_York" style="background:#10101a;">New York (EST/EDT)</option>
+          <option value="America/Los_Angeles" style="background:#10101a;">Los Angeles (PST/PDT)</option>
+          <option value="Europe/London" style="background:#10101a;">London (GMT/BST)</option>
+          <option value="Europe/Paris" style="background:#10101a;">Paris (CET/CEST)</option>
+          <option value="Asia/Singapore" style="background:#10101a;">Singapore (SGT)</option>
+          <option value="Australia/Sydney" style="background:#10101a;">Sydney (AEST)</option>
+        </select>
+      </div>
       <div class="status-pill status-warn" id="apiStatus"><div class="status-dot"></div> Connecting...</div>
     </div>
   </div>
@@ -377,7 +418,7 @@
         <div class="ctx-row"><span class="ctx-lbl">Sleep Hours</span><span class="ctx-val" id="ctxSleep">—</span></div>
         <div class="ctx-row"><span class="ctx-lbl">Stress Level</span><span class="ctx-val" id="ctxStress">—</span></div>
         <div class="ctx-row"><span class="ctx-lbl">Workload</span><span class="ctx-val" id="ctxWork">—</span></div>
-        <p style="font-size:0.76rem;color:var(--muted);margin-top:1rem;line-height:1.5;">Run an analysis on the Dashboard first to get context-aware AI answers.</p>
+        <p style="font-size:0.86rem;color:var(--muted);margin-top:1rem;line-height:1.5;">Run an analysis on the Dashboard first to get context-aware AI answers.</p>
       </div>
     </div>
   </div>
@@ -387,7 +428,7 @@
     <div class="ins-layout">
       <div class="card">
         <div class="card-hd"><i class="fas fa-exclamation-triangle"></i> Key Risk Factors</div>
-        <div class="factor-list" id="factorList"><p style="color:var(--muted);font-size:0.83rem;">Run an analysis from the Dashboard to see your personalized risk factors.</p></div>
+        <div class="factor-list" id="factorList"><p style="color:var(--muted);font-size:0.93rem;">Run an analysis from the Dashboard to see your personalized risk factors.</p></div>
       </div>
       <div class="card">
         <div class="card-hd"><i class="fas fa-chart-pie"></i> Feature Importance</div>
@@ -396,7 +437,7 @@
     </div>
     <div class="card" style="margin-top:1.25rem;">
       <div class="card-hd"><i class="fas fa-list-check"></i> AI Recommendations</div>
-      <div class="rec-list" id="recList"><p style="color:var(--muted);font-size:0.83rem;">Your personalized recommendations will appear here after analysis.</p></div>
+      <div class="rec-list" id="recList"><p style="color:var(--muted);font-size:0.93rem;">Your personalized recommendations will appear here after analysis.</p></div>
     </div>
   </div>
   
@@ -458,11 +499,15 @@
           <i class="fas fa-circle-notch fa-spin"></i> Checking backend connection...
         </div>
 
+        <div style="font-size:0.75rem;color:var(--warn);background:rgba(255,197,66,0.05);border:1px solid rgba(255,197,66,0.1);border-radius:8px;padding:0.5rem 0.75rem;margin-bottom:1rem;line-height:1.4;">
+          <i class="fas fa-info-circle"></i> <strong>Note:</strong> Institutional email systems (like <code>@rguktrkv.ac.in</code>) have strict spam filters. If you don't receive emails in your Inbox, please check your <strong>Spam / Junk</strong> folder and mark them as "Not Spam" or add <code>nixithaunta944@gmail.com</code> to your contacts whitelist.
+        </div>
+
         <label style="display:block;font-size:0.78rem;color:var(--muted);margin-bottom:0.4rem;font-weight:500;">Your Email Address</label>
         <input class="e-input" type="email" id="userEmail" readonly/>
 
         <label class="chk-label"><input type="checkbox" id="receiveWeekly" checked/> Weekly wellness report every Monday</label>
-        <label class="chk-label"><input type="checkbox" id="receiveAlerts" checked/> Instant alert when risk is High</label>
+        <label class="chk-label"><input type="checkbox" id="receiveAlerts" checked/> Instant report of the risk analyzed recently in the dashboard</label>
 
         <div class="ebtn-row">
           <button class="ebtn ebtn-pri" id="subscribeBtn" onclick="handleSubscribe()">
@@ -520,6 +565,40 @@
   </div>
 </main>
 
+<!-- MY ACCOUNT POPOVER (CHROME STYLE) -->
+<div id="accountPopover" class="profile-popover" style="display:none;">
+  <div style="background:rgba(255,255,255,0.02);padding:1.5rem;text-align:center;border-bottom:1px solid var(--border);position:relative;">
+    <button onclick="closeAccountPopover()" style="position:absolute;top:10px;right:10px;background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;line-height:1;">&times;</button>
+    <div id="popoverAvatar" style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);color:white;display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:bold;margin:0 auto 0.75rem;">U</div>
+    <h4 id="popoverName" style="margin:0;font-size:1.1rem;color:var(--text);font-weight:600;">User Name</h4>
+    <p id="popoverEmail" style="margin:0.25rem 0 0;font-size:0.8rem;color:var(--muted);">user@example.com</p>
+    <span style="font-size:0.7rem;color:var(--accent2);background:rgba(0,229,195,0.08);border:1px solid rgba(0,229,195,0.2);padding:0.15rem 0.5rem;border-radius:20px;display:inline-block;margin-top:0.5rem;"><i class="fas fa-shield-halved"></i> Free Account</span>
+  </div>
+
+  <div style="padding:1rem 1.25rem;display:flex;flex-direction:column;gap:0.75rem;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.15);">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-size:0.7rem;color:var(--muted);font-weight:bold;letter-spacing:0.5px;">ACCOUNT ID</span>
+      <button onclick="copyUserIdFromPopover()" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:0.75rem;display:flex;align-items:center;gap:0.2rem;" title="Copy ID"><i class="fas fa-copy"></i> Copy</button>
+    </div>
+    <div id="popoverUserId" style="font-family:monospace;font-size:0.8rem;color:var(--text);margin-top:-0.25rem;word-break:break-all;">USER_12345</div>
+
+    <div style="font-size:0.7rem;color:var(--muted);font-weight:bold;letter-spacing:0.5px;margin-top:0.25rem;">MEMBER SINCE</div>
+    <div id="popoverJoinedDate" style="font-size:0.8rem;color:var(--text);margin-top:-0.25rem;">July 18, 2026</div>
+  </div>
+
+  <div style="padding:0.5rem 0;">
+    <button onclick="goToNotificationsFromPopover()" style="width:100%;text-align:left;padding:0.6rem 1.25rem;background:none;border:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.85rem;display:flex;align-items:center;gap:0.75rem;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='none'">
+      <i class="fas fa-bell" style="width:16px;color:var(--primary);"></i> Manage Subscriptions
+    </button>
+    <button onclick="closeAccountPopover(); clearHistory();" style="width:100%;text-align:left;padding:0.6rem 1.25rem;background:none;border:none;color:var(--high);font-family:'DM Sans',sans-serif;font-size:0.85rem;display:flex;align-items:center;gap:0.75rem;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='none'">
+      <i class="fas fa-trash-alt" style="width:16px;color:var(--high);"></i> Clear Assessment History
+    </button>
+    <button onclick="logout()" style="width:100%;text-align:left;padding:0.6rem 1.25rem;background:none;border:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.85rem;display:flex;align-items:center;gap:0.75rem;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='none'">
+      <i class="fas fa-sign-out-alt" style="width:16px;color:var(--muted);"></i> Sign Out
+    </button>
+  </div>
+</div>
+
 <!-- LOADING OVERLAY -->
 <div id="loadingOverlay"><div class="spinner"></div><p>Analyzing your data...</p></div>
 
@@ -569,6 +648,7 @@ window.addEventListener('load', () => {
   checkAPIHealth();
   initSubscriptionForm();
   initUser();
+  initTimezone();
 });
 
 
@@ -577,8 +657,69 @@ function logout() {
   localStorage.removeItem('mg_user');
   localStorage.removeItem('burnout_user_id');
   window.location.href = 'login.html';
-
 }
+
+function openAccountPopover() {
+  const user = JSON.parse(localStorage.getItem('mg_user') || '{}');
+  const userId = user.user_id || localStorage.getItem('burnout_user_id') || '—';
+  const name = user.name || 'Demo User';
+  const email = user.email || 'demo@mindguard.ai';
+  let joined = '—';
+  if (user.created_at) {
+    try {
+      const dt = new Date(user.created_at);
+      joined = dt.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    } catch (e) {
+      joined = user.created_at;
+    }
+  } else {
+    joined = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  }
+
+  document.getElementById('popoverAvatar').textContent = name ? name[0].toUpperCase() : 'U';
+  document.getElementById('popoverName').textContent = name || 'Demo User';
+  document.getElementById('popoverUserId').textContent = userId;
+  document.getElementById('popoverEmail').textContent = email;
+  document.getElementById('popoverJoinedDate').textContent = joined;
+  
+  const popover = document.getElementById('accountPopover');
+  popover.style.display = popover.style.display === 'flex' ? 'none' : 'flex';
+}
+
+function closeAccountPopover() {
+  document.getElementById('accountPopover').style.display = 'none';
+}
+
+function copyUserIdFromPopover() {
+  const userId = document.getElementById('popoverUserId').textContent;
+  navigator.clipboard.writeText(userId).then(() => {
+    showNotification('Account ID copied to clipboard!', 'success');
+  }).catch(() => {
+    showNotification('Failed to copy ID', 'warning');
+  });
+}
+
+function goToNotificationsFromPopover() {
+  closeAccountPopover();
+  const navBtns = document.querySelectorAll('.nav-btn');
+  for (let btn of navBtns) {
+    if (btn.textContent.includes('Notifications')) {
+      showPage('email', btn);
+      break;
+    }
+  }
+}
+
+// Window click listener to close popover when clicking outside
+window.addEventListener('click', (event) => {
+  const popover = document.getElementById('accountPopover');
+  const userPill = document.querySelector('.user-pill');
+  if (popover && popover.style.display === 'flex') {
+    if (!popover.contains(event.target) && !userPill.contains(event.target)) {
+      closeAccountPopover();
+    }
+  }
+});
 function resetRiskUI() {
   const circ = 2 * Math.PI * 50;
 
@@ -622,8 +763,13 @@ function showPage(name, btn) {
 // ── INITIALIZE USER ──
 // Called ONCE on page load. Never call inside handleFormSubmit.
 async function initUser() {
-  // Re-read from storage in case it was set between script init and this call
-  if (!currentUserId) currentUserId = localStorage.getItem('burnout_user_id');
+  const loggedInUser = JSON.parse(localStorage.getItem('mg_user') || '{}');
+  if (loggedInUser && loggedInUser.user_id) {
+    currentUserId = loggedInUser.user_id;
+    localStorage.setItem('burnout_user_id', currentUserId);
+  } else {
+    currentUserId = localStorage.getItem('burnout_user_id');
+  }
 
   if (!currentUserId || currentUserId === 'null' || currentUserId === 'undefined') {
     // Brand-new user — create on server
@@ -733,8 +879,9 @@ async function handleFormSubmit() {
     }
 
     // Update importance chart — always render something
-    const imp = (explanation && explanation.global_feature_importance)
+    const imp = (explanation && explanation.local_feature_importance)
               || (explanation && explanation.importance)
+              || (explanation && explanation.global_feature_importance)
               || { stress_level:0.25, sleep_hours:0.2, workload_hours:0.18, screen_time:0.12, physical_activity:0.1, social_interaction:0.08, meal_quality:0.07 };
     updateImportanceChart(imp);
 
@@ -743,6 +890,7 @@ async function handleFormSubmit() {
       await loadUserHistory(userId);
     }
     refreshHistoryPage();
+    updateAlertsCheckboxState();
 
     showNotification(`Risk Level: ${prediction.risk_level} (${Math.round(prediction.risk_score)}%)`, 'success');
     
@@ -831,14 +979,21 @@ async function saveAssessment(inputData, prediction) {
     }
 
     if (prediction.risk_level === 'High' && prediction.risk_score >= 60) {
-      // ✅ FIX: Send all three fields as JSON body (not query params)
-      await fetch(`${API_BASE_URL}/send/alert`, {
+      // Send all three fields as JSON body to trigger instant email report if subscribed (or automatically on High risk)
+      const alertResp = await fetch(`${API_BASE_URL}/send/alert`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: userId, assessment_data: inputData, prediction: prediction })
       });
-      console.log('📧 High risk alert triggered');
-      showNotification('High risk detected! An alert has been sent to your email.', 'warning');
+      if (alertResp.ok) {
+        const alertData = await alertResp.json();
+        if (alertData.status === 'success') {
+          console.log('📧 Assessment report sent successfully');
+          showNotification('🚨 High risk detected! Alert sent. Please check your inbox and Spam/Junk folder.', 'warning');
+        } else {
+          console.log('📧 Assessment report skipped:', alertData.message);
+        }
+      }
     }
   } catch (error) { console.error('Failed to save assessment:', error); }
 }
@@ -848,7 +1003,7 @@ async function loadUserHistory(userId) {
   try {
     // Hard guard — never fire with undefined/null/LOCAL_ ids
     if (!userId || userId === 'undefined' || userId === 'null' || userId.startsWith('LOCAL_')) return;
-    const response = await fetch(`${API_BASE_URL}/history/${encodeURIComponent(userId)}?limit=10`);
+    const response = await fetch(`${API_BASE_URL}/history/${encodeURIComponent(userId)}?limit=100`);
     if (response.ok) {
       const data = await response.json();
       console.log('📊 User history loaded:', data);
@@ -860,6 +1015,11 @@ async function loadUserHistory(userId) {
           risk_score: h.risk_score || (h.prediction && h.prediction.risk_score) || 0
         }));
         localStorage.setItem('mg_history', JSON.stringify(hist));
+      }
+      if (data.statistics) {
+        localStorage.setItem('mg_statistics', JSON.stringify(data.statistics));
+      } else {
+        localStorage.removeItem('mg_statistics');
       }
     }
   } catch (error) { console.error('Failed to load history:', error); }
@@ -1019,13 +1179,13 @@ function updateInsightsFromAPI(explanation, formData) {
   const insightsContent = document.getElementById('factorList');
   // ✅ FIX: Support both 'concerning_factors' (API) and 'factors' (fallback) field names
   const factors = explanation.concerning_factors || explanation.factors || [];
-  if (factors.length === 0) { insightsContent.innerHTML = '<p style="color:var(--muted);font-size:0.83rem;">No concerning factors detected. Great job!</p>'; return; }
+  if (factors.length === 0) { insightsContent.innerHTML = '<p style="color:var(--muted);font-size:0.93rem;">No concerning factors detected. Great job!</p>'; return; }
   
   insightsContent.innerHTML = factors.slice(0, 5).map(f => {
     const name = (f.feature || f.factor || 'factor').replace(/_/g, ' ');
     const imp = f.impact || 'medium';
     const color = imp === 'high' ? 'var(--high)' : imp === 'medium' ? 'var(--med)' : 'var(--low)';
-    const pct = imp === 'high' ? 80 : imp === 'medium' ? 50 : 25;
+    const pct = f.percentage || f.impact_pct || (imp === 'high' ? 80 : imp === 'medium' ? 50 : 25);
     return `<div class="factor-row">
       <div class="factor-ic" style="background:rgba(255,107,107,0.09);color:${color}"><i class="fas fa-exclamation"></i></div>
       <span class="factor-nm">${name}</span>
@@ -1045,7 +1205,7 @@ function updateInsightsFromAPI(explanation, formData) {
 function updateInsights(explanation, formData) {
   const factors = explanation.factors || [];
   const factorList = document.getElementById('factorList');
-  if (factors.length === 0) { factorList.innerHTML = '<p style="color:var(--muted);font-size:0.83rem;">Your metrics are within healthy ranges!</p>'; return; }
+  if (factors.length === 0) { factorList.innerHTML = '<p style="color:var(--muted);font-size:0.93rem;">Your metrics are within healthy ranges!</p>'; return; }
   
   factorList.innerHTML = factors.slice(0, 5).map(f => {
     const color = f.impact === 'high' ? 'var(--high)' : 'var(--med)';
@@ -1123,8 +1283,7 @@ function refreshHistoryPage() {
     list.innerHTML = '<p style="color:var(--muted);font-size:0.83rem;">No assessments yet. Run your first analysis!</p>';
   } else {
     list.innerHTML = hist.map(h => {
-      const d = new Date(h.date);
-      const label = d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+      const label = formatAssessmentDate(h.date, { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true });
       return `<div class="hist-row">
         <span class="hist-date">${label}</span>
         <span class="hist-badge" style="color:${colors[h.risk_level]||'var(--muted)'};background:${bgColors[h.risk_level]||'rgba(255,255,255,0.05)'}">${h.risk_level||'—'}</span>
@@ -1133,13 +1292,30 @@ function refreshHistoryPage() {
     }).join('');
   }
 
-  const lo = hist.filter(h=>h.risk_level==='Low').length;
-  const me = hist.filter(h=>h.risk_level==='Medium').length;
-  const hi = hist.filter(h=>h.risk_level==='High').length;
-  document.getElementById('stTotal').textContent = hist.length;
-  document.getElementById('stLow').textContent   = lo;
-  document.getElementById('stMed').textContent   = me;
-  document.getElementById('stHigh').textContent  = hi;
+  function calculateStatsLocally(hist) {
+    const lo = hist.filter(h=>h.risk_level==='Low').length;
+    const me = hist.filter(h=>h.risk_level==='Medium').length;
+    const hi = hist.filter(h=>h.risk_level==='High').length;
+    document.getElementById('stTotal').textContent = hist.length;
+    document.getElementById('stLow').textContent   = lo;
+    document.getElementById('stMed').textContent   = me;
+    document.getElementById('stHigh').textContent  = hi;
+  }
+
+  const statsJson = localStorage.getItem('mg_statistics');
+  if (statsJson) {
+    try {
+      const stats = JSON.parse(statsJson);
+      document.getElementById('stTotal').textContent = stats.total_assessments || 0;
+      document.getElementById('stLow').textContent   = stats.risk_level_counts?.Low ?? 0;
+      document.getElementById('stMed').textContent   = stats.risk_level_counts?.Medium ?? 0;
+      document.getElementById('stHigh').textContent  = stats.risk_level_counts?.High ?? 0;
+    } catch (e) {
+      calculateStatsLocally(hist);
+    }
+  } else {
+    calculateStatsLocally(hist);
+  }
 
   // History trend chart — use time labels (HH:MM) so same-day entries are distinct
   const ctx = document.getElementById('historyChart').getContext('2d');
@@ -1157,8 +1333,7 @@ function refreshHistoryPage() {
 
   // Build meaningful x-axis labels: date+time if same day, else date
   const labelSet = recent.map(h => {
-    const d = new Date(h.date);
-    return d.toLocaleDateString([], {month:'short',day:'numeric'}) + ' ' + d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    return formatAssessmentDate(h.date, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true });
   });
 
   histChart = new Chart(ctx, {
@@ -1191,12 +1366,35 @@ function refreshHistoryPage() {
 }
 
 // ── CLEAR HISTORY ──
-function clearHistory() {
+async function clearHistory() {
   if (!confirm('Clear all assessment history? This cannot be undone.')) return;
+
+  const user = JSON.parse(localStorage.getItem('mg_user') || '{}');
+  const userId = user.user_id || localStorage.getItem('burnout_user_id');
+  if (userId && !userId.startsWith('LOCAL_')) {
+    try {
+      const resp = await fetch(`${API_BASE_URL}/history/clear/${encodeURIComponent(userId)}`, { method: 'POST' });
+      if (!resp.ok) {
+        showNotification('Failed to clear server history. Please try again.', 'warning');
+        return;
+      }
+    } catch (e) {
+      console.error('Failed to clear database history:', e);
+      showNotification('Server connection error. Please try again.', 'warning');
+      return;
+    }
+  }
+
   localStorage.removeItem('mg_history');
+  localStorage.removeItem('mg_statistics');
   localStorage.removeItem('mg_last_prediction');
   localStorage.removeItem('mg_last_form');
   localStorage.removeItem('mg_last_explanation');
+  
+  if (typeof updateAlertsCheckboxState === 'function') {
+    updateAlertsCheckboxState();
+  }
+  
   refreshHistoryPage();
   showNotification('History cleared.', 'success');
 }
@@ -1268,20 +1466,44 @@ async function handleSendReport() {
     return;
   }
 
-  const res = await fetch(
-    `http://localhost:8000/api/v1/send/weekly-report?user_id=${user.user_id}`,
-    { method: "POST" }
-  );
-
-  const data = await res.json();
-  console.log("REPORT:", data);
-
-  if (!res.ok) {
-    showNotification(data.detail || "Failed", "warning");
+  const hist = JSON.parse(localStorage.getItem('mg_history') || '[]');
+  if (hist.length === 0) {
+    showNotification("No assessment history found. Please analyze your burnout risk in the dashboard first!", "warning");
     return;
   }
 
-  showNotification("Report sent!", "success");
+  const btn = document.getElementById('sendReportBtn');
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending report...';
+  }
+
+  const receiveWeekly = document.getElementById("receiveWeekly").checked;
+  const receiveAlerts = document.getElementById("receiveAlerts").checked;
+
+  try {
+    const res = await fetch(
+      `http://localhost:8000/api/v1/send/weekly-report?user_id=${user.user_id}&receive_weekly=${receiveWeekly}&receive_alerts=${receiveAlerts}`,
+      { method: "POST" }
+    );
+
+    const data = await res.json();
+    console.log("REPORT:", data);
+
+    if (!res.ok || data.status === "failed") {
+      showNotification(data.message || data.detail || "Failed to send report", "warning");
+      return;
+    }
+
+    showNotification("Report sent successfully!", "success");
+  } catch (e) {
+    showNotification("Error: " + e.message, "warning");
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Report Now';
+    }
+  }
 }
 
 async function handleSubscribe() {
@@ -1293,7 +1515,11 @@ async function handleSubscribe() {
   }
 
   try {
-    const url = `http://localhost:8000/api/v1/user/subscribe?user_id=${user.user_id}&email=${encodeURIComponent(user.email)}&name=${encodeURIComponent(user.name)}&receive_weekly=true&receive_alerts=true`;
+    const weeklyChk = document.getElementById('receiveWeekly');
+    const alertsChk = document.getElementById('receiveAlerts');
+    const receiveWeekly = weeklyChk ? weeklyChk.checked : true;
+    const receiveAlerts = alertsChk ? alertsChk.checked : true;
+    const url = `http://localhost:8000/api/v1/user/subscribe?user_id=${user.user_id}&email=${encodeURIComponent(user.email)}&name=${encodeURIComponent(user.name)}&receive_weekly=${receiveWeekly}&receive_alerts=${receiveAlerts}`;
 
     const res = await fetch(url, {
       method: "POST"
@@ -1302,8 +1528,8 @@ async function handleSubscribe() {
     const data = await res.json();
     console.log("SUBSCRIBE:", data);
 
-    if (!res.ok) {
-      showNotification(data.detail || "Subscribe failed", "warning");
+    if (!res.ok || data.status === "failed") {
+      showNotification(data.message || data.detail || "Subscribe failed", "warning");
       return;
     }
 
@@ -1327,9 +1553,11 @@ async function handleTestEmail() {
   btn.disabled = true;
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending test...';
   try {
-    // Use the weekly-report endpoint as a test — same mechanism
-    const resp = await fetch(`${API_BASE_URL}/send/weekly-report?user_id=${encodeURIComponent(userId)}`, { method: 'POST' });
-    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const resp = await fetch(`${API_BASE_URL}/send/test-email?user_id=${encodeURIComponent(userId)}`, { method: 'POST' });
+    const data = await resp.json();
+    if (!resp.ok || data.status === 'failed') {
+      throw new Error(data.message || data.detail || 'HTTP ' + resp.status);
+    }
     showNotification('✅ Test email sent to ' + email + '!', 'success');
     setEmailStatus('<i class="fas fa-vial"></i> Test email sent to ' + email, 'var(--accent2)');
   } catch(e) {
@@ -1340,7 +1568,26 @@ async function handleTestEmail() {
   }
 }
 
-function initSubscriptionForm() {
+function updateAlertsCheckboxState() {
+  const hist = JSON.parse(localStorage.getItem('mg_history') || '[]');
+  const alertsChk = document.getElementById('receiveAlerts');
+  if (alertsChk) {
+    if (hist.length > 0 && hist[0].risk_level === 'High') {
+      alertsChk.checked = false;
+      alertsChk.disabled = true;
+      alertsChk.parentElement.title = "Disabled because an alert email is already automatically sent for your most recent High risk assessment.";
+      alertsChk.parentElement.style.opacity = '0.6';
+      alertsChk.parentElement.style.cursor = 'not-allowed';
+    } else {
+      alertsChk.disabled = false;
+      alertsChk.parentElement.removeAttribute('title');
+      alertsChk.parentElement.style.opacity = '1';
+      alertsChk.parentElement.style.cursor = 'pointer';
+    }
+  }
+}
+
+async function initSubscriptionForm() {
   // Try all possible sources for the email
   const user = JSON.parse(localStorage.getItem('mg_user') || '{}');
   const email = (user && user.email)
@@ -1352,7 +1599,56 @@ function initSubscriptionForm() {
     const inp = document.getElementById('userEmail');
     if (inp) inp.value = email;
   }
+
+  // Load preferences from backend
+  if (user && user.user_id) {
+    try {
+      const resp = await fetch(`${API_BASE_URL}/user/subscription/${encodeURIComponent(user.user_id)}`);
+      if (resp.ok) {
+        const resData = await resp.json();
+        if (resData.subscribed && resData.data) {
+          const weeklyChk = document.getElementById('receiveWeekly');
+          const alertsChk = document.getElementById('receiveAlerts');
+          if (weeklyChk) weeklyChk.checked = resData.data.receive_weekly !== false;
+          if (alertsChk) alertsChk.checked = resData.data.receive_alerts !== false;
+        }
+      }
+    } catch (e) {
+      console.error('Failed to load subscription preferences:', e);
+    }
+  }
+  updateAlertsCheckboxState();
 }
+
+// Timezone management
+function initTimezone() {
+  const select = document.getElementById('tzSelect');
+  const storedTz = localStorage.getItem('mg_timezone') || 'default';
+  if (select) {
+    select.value = storedTz;
+  }
+}
+
+function changeTimezone(val) {
+  if (val === 'default') {
+    localStorage.removeItem('mg_timezone');
+  } else {
+    localStorage.setItem('mg_timezone', val);
+  }
+  
+  // Re-render history page
+  refreshHistoryPage();
+}
+
+function formatAssessmentDate(dateStr, options) {
+  const d = new Date(dateStr);
+  const timezone = localStorage.getItem('mg_timezone');
+  if (timezone && timezone !== 'default') {
+    options.timeZone = timezone;
+  }
+  return d.toLocaleString('en-US', options);
+}
+
 window.onerror = function(msg) { console.error('Error: '+msg); return false; }
 </script>
 </body>

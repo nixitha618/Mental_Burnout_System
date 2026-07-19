@@ -23,3 +23,5 @@ models/
 # OS files
 .DS_Store
 data/vector_db/
+.env
+scratch/

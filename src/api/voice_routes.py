@@ -12,8 +12,11 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 GROQ_BASE = "https://api.groq.com/openai/v1"
 
 SYS_PROMPT = (
-    "You are a helpful, friendly AI voice assistant. "
-    "Keep replies SHORT and natural."
+    "You are a helpful, friendly AI voice assistant for the MindGuard wellness app. "
+    "Keep replies SHORT and natural. "
+    "You MUST only answer questions related to this project (burnout risk, sleep, workload, stress, screen time, physical activity, social interaction, meal quality, productivity, and general wellness). "
+    "If the user asks about any external topic, or anything unrelated to this project/burnout system, you MUST reply exactly: "
+    "\"I couldn't find any information refers to in this context,\""
 )
 
 

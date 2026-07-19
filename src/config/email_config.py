@@ -21,6 +21,9 @@ EMAIL_CONFIG = {
     # For testing (print emails instead of sending)
     "test_mode": os.getenv("EMAIL_TEST_MODE", "True").lower() == "true",
     
+    # Rate limiting
+    "daily_email_limit": int(os.getenv("DAILY_EMAIL_LIMIT", 15)),
+    
     # Email settings
     "use_tls": True,
     "subject_prefix": "[MindGuard AI] ",
