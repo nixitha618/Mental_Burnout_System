@@ -4,11 +4,30 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MindGuard AI — Mental Burnout Prevention</title>
+  <script>
+    if (localStorage.getItem('theme') === 'light') {
+      document.documentElement.classList.add('light-mode');
+    }
+  </script>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
     html{font-size:18px;}
     :root{--bg:#07070f;--card:#10101a;--border:rgba(255,255,255,0.07);--accent:#7c5cfc;--accent2:#00e5c3;--accent3:#ff6b6b;--warn:#ffc542;--text:#eeeef8;--muted:#5e5e80;}
+    html.light-mode{
+      --bg:#f5f6fa;
+      --card:#ffffff;
+      --border:rgba(0,0,0,0.08);
+      --accent:#6040d8;
+      --accent2:#009680;
+      --accent3:#d63031;
+      --warn:#d97706;
+      --text:#1a1a26;
+      --muted:#656784;
+    }
+    html.light-mode nav{background:rgba(255,255,255,0.85);border-bottom:1px solid var(--border);}
+    html.light-mode .btn-lg-primary{color:white;}
+    html.light-mode .step-num{color:white;}
     *{margin:0;padding:0;box-sizing:border-box;}
     html{scroll-behavior:smooth;}
     body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
@@ -88,6 +107,9 @@
     <li><a href="about.html">About</a></li>
   </ul>
   <div class="nav-cta">
+    <button id="themeToggleBtn" onclick="toggleTheme()" style="background:transparent;border:1px solid var(--border);border-radius:8px;padding:0.4rem 0.6rem;color:var(--text);cursor:pointer;font-size:0.875rem;display:flex;align-items:center;justify-content:center;height:35px;width:35px;" aria-label="Toggle Theme">
+      <i class="fas fa-sun"></i>
+    </button>
     <a href="login.html" class="btn-ghost">Sign In</a>
     <a href="signup.html" class="btn-primary">Get Started Free</a>
   </div>
@@ -144,6 +166,22 @@
     <a href="signup.html">Sign Up</a>
   </div>
 </footer>
+
+<script>
+  function toggleTheme() {
+    const isLight = document.documentElement.classList.toggle('light-mode');
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    updateThemeIcon();
+  }
+  function updateThemeIcon() {
+    const btn = document.getElementById('themeToggleBtn');
+    if (!btn) return;
+    const isLight = document.documentElement.contains ? document.documentElement.classList.contains('light-mode') : false;
+    btn.innerHTML = isLight ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+    btn.setAttribute('title', isLight ? 'Switch to Dark Mode' : 'Switch to Light Mode');
+  }
+  updateThemeIcon();
+</script>
 
 </body>
 </html>

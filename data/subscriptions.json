@@ -152,5 +152,12 @@
         "receive_weekly": false,
         "receive_alerts": true,
         "subscribed_at": "2026-07-17T12:35:46.068166"
+    },
+    "sub_USER_38F36495": {
+        "user_id": "USER_38F36495",
+        "email": "nixitha51@gmail.com",
+        "receive_weekly": true,
+        "receive_alerts": true,
+        "subscribed_at": "2026-08-15T23:13:51.149939"
     }
 }

@@ -54,6 +54,10 @@ async def root():
         }
     }
 
+# Serve static frontend files
+from fastapi.staticfiles import StaticFiles
+app.mount("/frontend", StaticFiles(directory="frontend"), name="frontend")
+
 # Start email scheduler
 scheduler = start_scheduler()
 print("📧 Email notification scheduler started")

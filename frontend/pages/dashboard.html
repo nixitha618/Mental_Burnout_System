@@ -4,6 +4,11 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard — MindGuard AI</title>
+  <script>
+    if (localStorage.getItem('theme') === 'light') {
+      document.documentElement.classList.add('light-mode');
+    }
+  </script>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -15,6 +20,49 @@
       --border:rgba(255,255,255,0.07);--accent:#7c5cfc;--accent2:#00e5c3;
       --accent3:#ff6b6b;--warn:#ffc542;--text:#eeeef8;--muted:#5e5e80;
       --low:#00e5c3;--med:#ffc542;--high:#ff6b6b;
+    }
+    html.light-mode{
+      --bg:#f5f6fa;
+      --sidebar:#ffffff;
+      --card:#ffffff;
+      --card2:#eff1f5;
+      --border:rgba(0,0,0,0.08);
+      --accent:#6040d8;
+      --accent2:#009680;
+      --accent3:#d63031;
+      --warn:#d97706;
+      --text:#1a1a26;
+      --muted:#656784;
+      --low:#009680;
+      --med:#d97706;
+      --high:#d63031;
+    }
+    html.light-mode .card {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+    }
+    html.light-mode .profile-popover {
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    }
+    html.light-mode .sb-logo-box {
+      color: white;
+    }
+    html.light-mode .user-av {
+      color: white;
+    }
+    html.light-mode .rec-row i {
+      color: var(--accent2);
+    }
+    html.light-mode #tzSelect option {
+      background: #ffffff;
+      color: #1a1a26;
+    }
+    html.light-mode .topbar {
+      background: rgba(255, 255, 255, 0.85);
+      border-bottom: 1px solid var(--border);
+    }
+    html.light-mode .tz-container {
+      background: rgba(0, 0, 0, 0.03) !important;
+      border: 1px solid rgba(0, 0, 0, 0.08) !important;
     }
     *{margin:0;padding:0;box-sizing:border-box;}
     body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;}
@@ -231,7 +279,7 @@
 <aside class="sidebar">
   <div class="sb-logo">
     <div class="sb-logo-box">🧠</div>
-    <span>Mind<em>Guard</em> AI</span>
+    MindGuard</em> AI
   </div>
 
   <div class="sb-section">
@@ -272,6 +320,9 @@
   <div class="topbar">
     <div class="topbar-title" id="topbarTitle">Dashboard</div>
     <div class="topbar-right" style="display:flex;align-items:center;gap:0.75rem;">
+      <button id="themeToggleBtn" onclick="toggleTheme()" style="background:transparent;border:1px solid var(--border);border-radius:8px;padding:0.4rem 0.6rem;color:var(--text);cursor:pointer;font-size:0.875rem;display:flex;align-items:center;justify-content:center;height:32px;width:32px;" aria-label="Toggle Theme">
+        <i class="fas fa-sun"></i>
+      </button>
       <div class="tz-container" style="display:flex;align-items:center;gap:0.35rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:0.3rem 0.5rem;font-size:0.75rem;">
         <i class="fas fa-globe" style="color:var(--muted);"></i>
         <select id="tzSelect" onchange="changeTimezone(this.value)" style="background:none;border:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.75rem;outline:none;cursor:pointer;">
@@ -608,7 +659,7 @@
 // All API calls preserved from original main.js
 // ============================================
 
-const API_BASE_URL = 'http://127.0.0.1:8000/api/v1';
+const API_BASE_URL = window.location.origin + '/api/v1';
 let currentUserId = localStorage.getItem('burnout_user_id');
 let riskChart, importanceChart, trendChart, histChart;
 let lastPrediction = null;
@@ -1241,7 +1292,7 @@ function updateMetricsChart(data) {
         borderRadius:5
       }]
     },
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,max:12,grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#5e5e80',font:{size:10}}},x:{grid:{display:false},ticks:{color:'#5e5e80',font:{size:10}}}}}
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,max:12,grid:{color:getChartColors().grid},ticks:{color:getChartColors().ticks,font:{size:10}}},x:{grid:{display:false},ticks:{color:getChartColors().ticks,font:{size:10}}}}}
   });
 }
 
@@ -1253,7 +1304,7 @@ function updateImportanceChart(importance) {
   importanceChart = new Chart(ctx, {
     type:'doughnut',
     data:{labels:sorted.map(i=>i[0].replace(/_/g,' ')),datasets:[{data:sorted.map(i=>(i[1]*100).toFixed(1)),backgroundColor:['#7c5cfc','#00e5c3','#ff6b6b','#ffc542','#a78bfa'],borderWidth:0}]},
-    options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{position:'bottom',labels:{color:'#5e5e80',font:{size:10}}}}}
+    options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{position:'bottom',labels:{color:getChartColors().ticks,font:{size:10}}}}}
   });
 }
 
@@ -1265,8 +1316,8 @@ function updateTrendChart(currentRisk) {
   const vals = [base-15,base-10,base-5,base,base+3,base+5,base+2].map(v=>Math.min(100,Math.max(0,v)));
   trendChart = new Chart(ctx, {
     type:'line',
-    data:{labels:days,datasets:[{data:vals,borderColor:'#7c5cfc',borderWidth:2,tension:0.4,fill:true,backgroundColor:'rgba(124,92,252,0.07)',pointBackgroundColor:vals.map(v=>v<30?'#00e5c3':v<60?'#ffc542':'#ff6b6b'),pointRadius:5,pointBorderColor:'var(--bg)',pointBorderWidth:2}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,max:100,grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#5e5e80',font:{size:10}}},x:{grid:{display:false},ticks:{color:'#5e5e80',font:{size:10}}}}}
+    data:{labels:days,datasets:[{data:vals,borderColor:'#7c5cfc',borderWidth:2,tension:0.4,fill:true,backgroundColor:'rgba(124,92,252,0.07)',pointBackgroundColor:vals.map(v=>v<30?'#00e5c3':v<60?'#ffc542':'#ff6b6b'),pointRadius:5,pointBorderColor:getChartColors().pointBorder,pointBorderWidth:2}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,max:100,grid:{color:getChartColors().grid},ticks:{color:getChartColors().ticks,font:{size:10}}},x:{grid:{display:false},ticks:{color:getChartColors().ticks,font:{size:10}}}}}
   });
 }
 
@@ -1349,7 +1400,7 @@ function refreshHistoryPage() {
         backgroundColor: 'rgba(124,92,252,0.07)',
         pointBackgroundColor: recent.map(h => h.risk_level==='Low'?'#00e5c3': h.risk_level==='High'?'#ff6b6b':'#ffc542'),
         pointRadius: 5,
-        pointBorderColor: '#07070f',
+        pointBorderColor: getChartColors().pointBorder,
         pointBorderWidth: 2
       }]
     },
@@ -1358,8 +1409,8 @@ function refreshHistoryPage() {
       maintainAspectRatio: false,
       plugins: { legend: { display: false } },
       scales: {
-        y: { beginAtZero: true, max: 100, grid:{ color:'rgba(255,255,255,0.04)' }, ticks:{ color:'#5e5e80', font:{size:10} } },
-        x: { grid:{ display:false }, ticks:{ color:'#5e5e80', font:{size:9}, maxRotation:30, minRotation:0 } }
+        y: { beginAtZero: true, max: 100, grid:{ color:getChartColors().grid }, ticks:{ color:getChartColors().ticks, font:{size:10} } },
+        x: { grid:{ display:false }, ticks:{ color:getChartColors().ticks, font:{size:9}, maxRotation:30, minRotation:0 } }
       }
     }
   });
@@ -1650,6 +1701,74 @@ function formatAssessmentDate(dateStr, options) {
 }
 
 window.onerror = function(msg) { console.error('Error: '+msg); return false; }
+
+// Theme functions & Chart integrations
+function getChartColors() {
+  const isLight = document.documentElement.classList.contains('light-mode');
+  return {
+    grid: isLight ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.04)',
+    ticks: isLight ? '#6b6d8a' : '#8f8fbf',
+    pointBorder: isLight ? '#f5f6fa' : '#07070f'
+  };
+}
+
+function updateChartsTheme() {
+  const colors = getChartColors();
+  if (riskChart) {
+    riskChart.options.scales.y.grid.color = colors.grid;
+    riskChart.options.scales.y.ticks.color = colors.ticks;
+    riskChart.options.scales.x.ticks.color = colors.ticks;
+    riskChart.update();
+  }
+  if (importanceChart) {
+    importanceChart.options.plugins.legend.labels.color = colors.ticks;
+    importanceChart.update();
+  }
+  if (trendChart) {
+    trendChart.options.scales.y.grid.color = colors.grid;
+    trendChart.options.scales.y.ticks.color = colors.ticks;
+    trendChart.options.scales.x.ticks.color = colors.ticks;
+    trendChart.update();
+  }
+  if (histChart) {
+    histChart.options.scales.y.grid.color = colors.grid;
+    histChart.options.scales.y.ticks.color = colors.ticks;
+    histChart.options.scales.x.ticks.color = colors.ticks;
+    histChart.update();
+  }
+}
+
+function toggleTheme() {
+  const isLight = document.documentElement.classList.toggle('light-mode');
+  localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  updateThemeIcon();
+  updateChartsTheme();
+}
+
+function updateThemeIcon() {
+  const btn = document.getElementById('themeToggleBtn');
+  if (!btn) return;
+  const isLight = document.documentElement.classList.contains('light-mode');
+  btn.innerHTML = isLight ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+  btn.setAttribute('title', isLight ? 'Switch to Dark Mode' : 'Switch to Light Mode');
+}
+
+// Real-time theme synchronization
+function syncTheme() {
+  const isLight = localStorage.getItem('theme') === 'light';
+  if (isLight) {
+    document.documentElement.classList.add('light-mode');
+  } else {
+    document.documentElement.classList.remove('light-mode');
+  }
+  updateThemeIcon();
+  updateChartsTheme();
+}
+window.addEventListener('storage', (e) => {
+  if (e.key === 'theme') syncTheme();
+});
+window.addEventListener('pageshow', syncTheme);
+syncTheme();
 </script>
 </body>
 </html>
