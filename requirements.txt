@@ -17,7 +17,7 @@ python-multipart==0.0.6
 # NLP and RAG - Simplified for now to avoid conflicts
 transformers==4.36.2
 sentence-transformers==2.2.2
-torch==2.1.2
+torch>=2.1.2
 
 # Utilities
 python-dotenv==1.0.0
