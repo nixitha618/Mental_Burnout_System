@@ -41,7 +41,20 @@
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
     }
     html.light-mode .profile-popover {
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 12px 45px rgba(0, 0, 0, 0.08);
+    }
+    html.light-mode .profile-popover .popover-header {
+      background: rgba(0, 0, 0, 0.01) !important;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+    }
+    html.light-mode .profile-popover .popover-body {
+      background: rgba(0, 0, 0, 0.02) !important;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+    }
+    html.light-mode .popover-action-btn:hover {
+      background: rgba(0, 0, 0, 0.03) !important;
     }
     html.light-mode .sb-logo-box {
       color: white;
@@ -269,17 +282,39 @@
     .btn-copy:hover {
       filter: brightness(1.2);
     }
+    .popover-action-btn:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+    .menu-toggle-btn {
+      display: none;
+    }
+    .sidebar-close-btn {
+      display: none;
+    }
 
-    @media(max-width:900px){.sidebar{transform:translateX(-100%);}.main{margin-left:0;}.dash-top,.ins-layout,.hist-layout,.about-layout,.guid-layout{grid-template-columns:1fr;}.dash-bot,.dash-mid{grid-template-columns:1fr;}.arch-grid{grid-template-columns:1fr 1fr;}.stats-row{grid-template-columns:1fr 1fr;}}
+    @media(max-width:900px){
+      .sidebar{transform:translateX(-100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1001;}
+      .sidebar.active{transform:translateX(0) !important; box-shadow: 0 0 25px rgba(0,0,0,0.5);}
+      .menu-toggle-btn{display:flex; align-items:center; justify-content:center; background:transparent; border:1px solid var(--border); border-radius:8px; padding:0.4rem 0.6rem; color:var(--text); cursor:pointer; font-size:0.875rem; height:32px; width:32px; flex-shrink:0;}
+      .sidebar-close-btn{display:flex; align-items:center; justify-content:center; background:transparent; border:none; color:var(--muted); cursor:pointer; font-size:1.1rem; margin-left:auto;}
+      .main{margin-left:0;}
+      .dash-top,.ins-layout,.hist-layout,.about-layout,.guid-layout{grid-template-columns:1fr;}
+      .dash-bot,.dash-mid{grid-template-columns:1fr;}
+      .arch-grid{grid-template-columns:1fr 1fr;}
+      .stats-row{grid-template-columns:1fr 1fr;}
+    }
   </style>
 </head>
 <body>
 
 <!-- SIDEBAR -->
-<aside class="sidebar">
+<aside class="sidebar" id="sidebar">
   <div class="sb-logo">
     <div class="sb-logo-box">🧠</div>
-    MindGuard</em> AI
+    <span style="font-family:'Outfit',sans-serif;font-weight:800;flex:1;">Mind<em>Guard</em> AI</span>
+    <button class="sidebar-close-btn" onclick="toggleSidebar()" aria-label="Close Navigation Menu">
+      <i class="fas fa-times"></i>
+    </button>
   </div>
 
   <div class="sb-section">
@@ -318,7 +353,12 @@
 <!-- MAIN -->
 <main class="main">
   <div class="topbar">
-    <div class="topbar-title" id="topbarTitle">Dashboard</div>
+    <div style="display:flex;align-items:center;gap:0.75rem;">
+      <button class="menu-toggle-btn" onclick="toggleSidebar()" aria-label="Toggle Navigation Menu">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="topbar-title" id="topbarTitle">Dashboard</div>
+    </div>
     <div class="topbar-right" style="display:flex;align-items:center;gap:0.75rem;">
       <button id="themeToggleBtn" onclick="toggleTheme()" style="background:transparent;border:1px solid var(--border);border-radius:8px;padding:0.4rem 0.6rem;color:var(--text);cursor:pointer;font-size:0.875rem;display:flex;align-items:center;justify-content:center;height:32px;width:32px;" aria-label="Toggle Theme">
         <i class="fas fa-sun"></i>
@@ -616,17 +656,16 @@
   </div>
 </main>
 
-<!-- MY ACCOUNT POPOVER (CHROME STYLE) -->
 <div id="accountPopover" class="profile-popover" style="display:none;">
-  <div style="background:rgba(255,255,255,0.02);padding:1.5rem;text-align:center;border-bottom:1px solid var(--border);position:relative;">
+  <div class="popover-header" style="padding:1.5rem;text-align:center;border-bottom:1px solid var(--border);position:relative;">
     <button onclick="closeAccountPopover()" style="position:absolute;top:10px;right:10px;background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;line-height:1;">&times;</button>
-    <div id="popoverAvatar" style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);color:white;display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:bold;margin:0 auto 0.75rem;">U</div>
+    <div id="popoverAvatar" style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);color:white;display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:bold;margin:0 auto 0.75rem;">U</div>
     <h4 id="popoverName" style="margin:0;font-size:1.1rem;color:var(--text);font-weight:600;">User Name</h4>
     <p id="popoverEmail" style="margin:0.25rem 0 0;font-size:0.8rem;color:var(--muted);">user@example.com</p>
     <span style="font-size:0.7rem;color:var(--accent2);background:rgba(0,229,195,0.08);border:1px solid rgba(0,229,195,0.2);padding:0.15rem 0.5rem;border-radius:20px;display:inline-block;margin-top:0.5rem;"><i class="fas fa-shield-halved"></i> Free Account</span>
   </div>
 
-  <div style="padding:1rem 1.25rem;display:flex;flex-direction:column;gap:0.75rem;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.15);">
+  <div class="popover-body" style="padding:1rem 1.25rem;display:flex;flex-direction:column;gap:0.75rem;border-bottom:1px solid var(--border);background:rgba(255,255,255,0.02);">
     <div style="display:flex;justify-content:space-between;align-items:center;">
       <span style="font-size:0.7rem;color:var(--muted);font-weight:bold;letter-spacing:0.5px;">ACCOUNT ID</span>
       <button onclick="copyUserIdFromPopover()" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:0.75rem;display:flex;align-items:center;gap:0.2rem;" title="Copy ID"><i class="fas fa-copy"></i> Copy</button>
@@ -638,13 +677,13 @@
   </div>
 
   <div style="padding:0.5rem 0;">
-    <button onclick="goToNotificationsFromPopover()" style="width:100%;text-align:left;padding:0.6rem 1.25rem;background:none;border:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.85rem;display:flex;align-items:center;gap:0.75rem;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='none'">
-      <i class="fas fa-bell" style="width:16px;color:var(--primary);"></i> Manage Subscriptions
+    <button class="popover-action-btn" onclick="goToNotificationsFromPopover()" style="width:100%;text-align:left;padding:0.6rem 1.25rem;background:none;border:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.85rem;display:flex;align-items:center;gap:0.75rem;cursor:pointer;transition:background 0.2s;">
+      <i class="fas fa-bell" style="width:16px;color:var(--accent);"></i> Manage Subscriptions
     </button>
-    <button onclick="closeAccountPopover(); clearHistory();" style="width:100%;text-align:left;padding:0.6rem 1.25rem;background:none;border:none;color:var(--high);font-family:'DM Sans',sans-serif;font-size:0.85rem;display:flex;align-items:center;gap:0.75rem;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='none'">
+    <button class="popover-action-btn" onclick="closeAccountPopover(); clearHistory();" style="width:100%;text-align:left;padding:0.6rem 1.25rem;background:none;border:none;color:var(--high);font-family:'DM Sans',sans-serif;font-size:0.85rem;display:flex;align-items:center;gap:0.75rem;cursor:pointer;transition:background 0.2s;">
       <i class="fas fa-trash-alt" style="width:16px;color:var(--high);"></i> Clear Assessment History
     </button>
-    <button onclick="logout()" style="width:100%;text-align:left;padding:0.6rem 1.25rem;background:none;border:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.85rem;display:flex;align-items:center;gap:0.75rem;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='none'">
+    <button class="popover-action-btn" onclick="logout()" style="width:100%;text-align:left;padding:0.6rem 1.25rem;background:none;border:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.85rem;display:flex;align-items:center;gap:0.75rem;cursor:pointer;transition:background 0.2s;">
       <i class="fas fa-sign-out-alt" style="width:16px;color:var(--muted);"></i> Sign Out
     </button>
   </div>
@@ -687,10 +726,14 @@ window.addEventListener('load', () => {
   }
 
   // ✅ Sidebar name
-  if (user.name) {
-    document.getElementById('sbName').textContent = user.name;
-    document.getElementById('sbAvatar').textContent = user.name[0].toUpperCase();
+  let name = 'Demo User';
+  if (user.name && user.name.trim()) {
+    name = user.name.trim();
+  } else if (user.email && user.email.trim()) {
+    name = user.email.split('@')[0];
   }
+  document.getElementById('sbName').textContent = name;
+  document.getElementById('sbAvatar').textContent = name[0].toUpperCase();
 
   // ✅ Reset risk UI (IMPORTANT)
   resetRiskUI();
@@ -713,7 +756,12 @@ function logout() {
 function openAccountPopover() {
   const user = JSON.parse(localStorage.getItem('mg_user') || '{}');
   const userId = user.user_id || localStorage.getItem('burnout_user_id') || '—';
-  const name = user.name || 'Demo User';
+  let name = 'Demo User';
+  if (user.name && user.name.trim()) {
+    name = user.name.trim();
+  } else if (user.email && user.email.trim()) {
+    name = user.email.split('@')[0];
+  }
   const email = user.email || 'demo@mindguard.ai';
   let joined = '—';
   if (user.created_at) {
@@ -808,6 +856,19 @@ function showPage(name, btn) {
       .then(r => updateEmailApiBanner(r.ok))
       .catch(() => updateEmailApiBanner(false));
     initSubscriptionForm();
+  }
+  
+  // Close sidebar drawer on mobile after clicking a link
+  const sidebar = document.getElementById('sidebar');
+  if (sidebar && window.innerWidth <= 900) {
+    sidebar.classList.remove('active');
+  }
+}
+
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  if (sidebar) {
+    sidebar.classList.toggle('active');
   }
 }
 
