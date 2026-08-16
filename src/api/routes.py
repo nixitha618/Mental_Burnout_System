@@ -604,9 +604,13 @@ async def signup(user: UserSignup):
         existing_user = db.session.query(User).filter_by(email=user.email).first()
 
         if existing_user:
-            raise HTTPException(status_code=400, detail="Email already exists")
-
-        new_user = db.create_user(user.name, user.email)
+            if existing_user.password is not None:
+                raise HTTPException(status_code=400, detail="Email already exists")
+            # If the email exists but password is None, allow completing registration!
+            new_user = existing_user
+            new_user.name = user.name
+        else:
+            new_user = db.create_user(user.name, user.email)
 
         # ✅ STORE PASSWORD
         new_user.password = user.password

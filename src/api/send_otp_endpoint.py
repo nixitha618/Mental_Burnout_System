@@ -10,10 +10,10 @@ from pydantic import BaseModel
 # ── Load env ─────────────────────────────────────────────
 load_dotenv()
 
-SMTP_SERVER   = os.getenv("SMTP_SERVER", "smtp.gmail.com")
-SMTP_PORT     = int(os.getenv("SMTP_PORT", 587))
-SENDER_EMAIL  = os.getenv("SENDER_EMAIL", "")
-SENDER_PASS   = os.getenv("SENDER_PASSWORD", "")
+SMTP_SERVER   = os.getenv("SMTP_SERVER", "smtp.gmail.com").strip("'\"")
+SMTP_PORT     = int(str(os.getenv("SMTP_PORT", 587)).strip("'\""))
+SENDER_EMAIL  = os.getenv("SENDER_EMAIL", "").strip("'\"")
+SENDER_PASS   = os.getenv("SENDER_PASSWORD", "").strip("'\"")
 
 logger = logging.getLogger("mindguard.otp")
 
@@ -67,7 +67,7 @@ def _send_email(to_email: str, otp: str, mode: str, name: str):
 
     msg.attach(MIMEText(html, "html"))
 
-    with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+    with smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=10.0) as server:
         server.starttls()
         server.login(SENDER_EMAIL, SENDER_PASS)
         server.send_message(msg)

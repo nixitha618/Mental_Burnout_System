@@ -171,7 +171,7 @@ class EmailService:
 
             msg.attach(MIMEText(html_content, 'html'))
 
-            with smtplib.SMTP(self.config['smtp_server'], self.config['smtp_port']) as server:
+            with smtplib.SMTP(self.config['smtp_server'], self.config['smtp_port'], timeout=10.0) as server:
                 if self.config.get('use_tls', True):
                     server.starttls()
                 server.login(self.config['sender_email'], self.config['sender_password'])
