@@ -629,7 +629,13 @@
     <div class="guid-layout">
       <!-- LEFT: Voice + Chat -->
       <div class="card">
-        <div class="card-hd"><i class="fas fa-microphone"></i> Voice Assistant</div>
+        <div class="card-hd" style="display:flex; justify-content:space-between; align-items:center; width: 100%;">
+          <span><i class="fas fa-microphone"></i> Voice Assistant</span>
+          <div class="status-pill status-warn" id="statusPill" style="margin-left:auto;">
+            <div class="status-dot"></div>
+            <span id="statusText">Disconnected</span>
+          </div>
+        </div>
         <div class="orb-section">
           <div class="orb-wrap" id="orbWrap">
             <div class="ring ring-1"></div>
