@@ -22,6 +22,8 @@ logger = setup_logger(__name__)
 
 # Configure Groq API
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+if GROQ_API_KEY:
+    GROQ_API_KEY = GROQ_API_KEY.strip("'\"")
 
 try:
     from groq import Groq

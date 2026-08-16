@@ -13,13 +13,13 @@ load_dotenv()
 # Email Configuration
 EMAIL_CONFIG = {
     # For Gmail users (use App Password, not regular password)
-    "smtp_server": os.getenv("SMTP_SERVER", "smtp.gmail.com"),
-    "smtp_port": int(os.getenv("SMTP_PORT", 587)),
-    "sender_email": os.getenv("SENDER_EMAIL", ""),
-    "sender_password": os.getenv("SENDER_PASSWORD", ""),
+    "smtp_server": os.getenv("SMTP_SERVER", "smtp.gmail.com").strip("'\""),
+    "smtp_port": int(str(os.getenv("SMTP_PORT", 587)).strip("'\"")),
+    "sender_email": os.getenv("SENDER_EMAIL", "").strip("'\""),
+    "sender_password": os.getenv("SENDER_PASSWORD", "").strip("'\""),
     
     # For testing (print emails instead of sending)
-    "test_mode": os.getenv("EMAIL_TEST_MODE", "True").lower() == "true",
+    "test_mode": str(os.getenv("EMAIL_TEST_MODE", "True")).strip("'\"").lower() == "true",
     
     # Rate limiting
     "daily_email_limit": int(os.getenv("DAILY_EMAIL_LIMIT", 15)),

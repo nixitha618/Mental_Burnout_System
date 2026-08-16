@@ -9,6 +9,8 @@ router = APIRouter()
 logger = logging.getLogger(__name__)
 
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+if GROQ_API_KEY:
+    GROQ_API_KEY = GROQ_API_KEY.strip("'\"")
 GROQ_BASE = "https://api.groq.com/openai/v1"
 
 SYS_PROMPT = (
