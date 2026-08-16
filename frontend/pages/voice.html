@@ -162,8 +162,25 @@
     @media(max-width:860px){
       .page-content{grid-template-columns:1fr;padding:1rem;}
       .topbar{padding:0.875rem 1rem;}
+      body.in-iframe {
+        min-height: 100dvh;
+        overflow-y: auto;
+      }
       body.in-iframe .page-content {
+        display: flex;
+        flex-direction: column;
         padding: 0.75rem 0.5rem;
+        gap: 1rem;
+      }
+      body.in-iframe .page-content > .card {
+        display: flex;
+        flex-direction: column;
+        min-height: calc(100dvh - 35px); /* Occupy full dynamic viewport height inside iframe */
+      }
+      body.in-iframe .chat-panel {
+        flex: 1;
+        max-height: none;
+        min-height: 220px;
       }
     }
   </style>
