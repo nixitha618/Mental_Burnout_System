@@ -94,6 +94,27 @@ class KnowledgeBase:
                 metadata={"hnsw:space": "cosine"}
             )
             logger.info(f"✅ Created new collection: {collection_name}")
+
+        # Auto-seed if empty
+        if self.collection.count() == 0:
+            logger.info("ChromaDB collection is empty. Auto-seeding wellness articles...")
+            try:
+                from scripts.ingest_knowledge import WELLNESS_ARTICLES
+                docs = []
+                metadatas = []
+                ids = []
+                for idx, art in enumerate(WELLNESS_ARTICLES):
+                    docs.append(art['content'])
+                    metadatas.append({
+                        'title': art['title'],
+                        'category': art['category'],
+                        'risk_level': art['risk_level']
+                    })
+                    ids.append(f"doc_{idx:06d}")
+                self.add_documents(docs, metadatas=metadatas, ids=ids)
+                logger.info(f"✅ Auto-seeded ChromaDB collection with {self.collection.count()} documents")
+            except Exception as e:
+                logger.error(f"❌ Failed to auto-seed ChromaDB collection: {e}")
     
     def add_documents(self, documents, metadatas=None, ids=None):
         if not documents:
