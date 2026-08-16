@@ -307,40 +307,26 @@ async def subscribe_user(
         except Exception:
             pass
 
-        user = db.get_user(user_id)
+        # Check if email is already registered to a user in the database
+        existing_user = db.session.query(User).filter_by(email=email).first()
 
-        # ✅ If user does not exist → create (first login case)
-        if not user:
-            user = db.create_user(name, email)
-
-        else:
-            # ✅ RULE 1: user must use same login email
-            if user.email and user.email != email:
-                raise HTTPException(
-                    status_code=400,
-                    detail="You must use your login email only"
-                )
-
-            # ✅ RULE 2: prevent duplicate email across users
-            existing_user = db.session.query(type(user)).filter_by(email=email).first()
-            if existing_user:
-                if existing_user.user_id.strip().lower() != user_id.strip().lower():
-                  raise HTTPException(
-                    status_code=400,
-                    detail="Email already used by another user"
-                )
-
-            # ✅ Only set email if empty (do NOT overwrite)
-            if not user.email:
-                user.email = email
-
+        if existing_user:
+            user = existing_user
             if name:
                 user.name = name
-
             db.session.commit()
+        else:
+            user = db.get_user(user_id)
+            if not user:
+                user = db.create_user(name, email)
+            else:
+                user.email = email
+                if name:
+                    user.name = name
+                db.session.commit()
 
         # ================= SAVE SUBSCRIPTION =================
-        subscription_key = f"sub_{user_id}"
+        subscription_key = f"sub_{user.user_id}"
         subscriptions = {}
 
         try:
@@ -350,7 +336,7 @@ async def subscribe_user(
             pass
 
         subscriptions[subscription_key] = {
-            'user_id': user_id,
+            'user_id': user.user_id,
             'email': user.email,  # ✅ ALWAYS use DB email
             'receive_weekly': receive_weekly,
             'receive_alerts': receive_alerts,
@@ -366,7 +352,7 @@ async def subscribe_user(
         return {
             "status": "success",
             "message": "Subscribed successfully",
-            "user_id": user_id,
+            "user_id": user.user_id,
             "email": user.email
         }
 

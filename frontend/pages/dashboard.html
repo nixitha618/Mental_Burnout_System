@@ -1534,7 +1534,7 @@ async function handleSendReport() {
 
   try {
     const res = await fetch(
-      `http://localhost:8000/api/v1/send/weekly-report?user_id=${user.user_id}&receive_weekly=${receiveWeekly}&receive_alerts=${receiveAlerts}`,
+      `${API_BASE_URL}/send/weekly-report?user_id=${user.user_id}&receive_weekly=${receiveWeekly}&receive_alerts=${receiveAlerts}`,
       { method: "POST" }
     );
 
@@ -1570,7 +1570,7 @@ async function handleSubscribe() {
     const alertsChk = document.getElementById('receiveAlerts');
     const receiveWeekly = weeklyChk ? weeklyChk.checked : true;
     const receiveAlerts = alertsChk ? alertsChk.checked : true;
-    const url = `http://localhost:8000/api/v1/user/subscribe?user_id=${user.user_id}&email=${encodeURIComponent(user.email)}&name=${encodeURIComponent(user.name)}&receive_weekly=${receiveWeekly}&receive_alerts=${receiveAlerts}`;
+    const url = `${API_BASE_URL}/user/subscribe?user_id=${user.user_id}&email=${encodeURIComponent(user.email)}&name=${encodeURIComponent(user.name)}&receive_weekly=${receiveWeekly}&receive_alerts=${receiveAlerts}`;
 
     const res = await fetch(url, {
       method: "POST"
