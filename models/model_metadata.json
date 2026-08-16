@@ -1,0 +1,19 @@
+{
+  "model_type": "xgboost",
+  "features": [
+    "sleep_hours",
+    "workload_hours",
+    "stress_level",
+    "screen_time",
+    "physical_activity",
+    "social_interaction",
+    "meal_quality",
+    "productivity_score"
+  ],
+  "random_state": 42,
+  "classes": [
+    "High",
+    "Low",
+    "Medium"
+  ]
+}

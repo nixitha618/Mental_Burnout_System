@@ -15,9 +15,7 @@ logs/
 # Database
 *.db
 
-# Models / heavy files
-models/
-*.pkl
+# Models / heavy files (keep models folder but ignore large binary checkpoints if any)
 *.h5
 
 # OS files
