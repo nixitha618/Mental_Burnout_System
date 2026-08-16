@@ -152,7 +152,20 @@
     @keyframes typingBounce{0%,80%,100%{transform:translateY(0);}40%{transform:translateY(-5px);}}
     @keyframes tslide      {from{transform:translateY(16px);opacity:0;}to{transform:none;opacity:1;}}
 
-    @media(max-width:860px){.page-content{grid-template-columns:1fr;padding:1rem;}.topbar{padding:0.875rem 1rem;}}
+    /* Hide topbar when loaded inside iframe */
+    body.in-iframe .topbar {
+      display: none !important;
+    }
+    body.in-iframe .page-content {
+      padding: 1.75rem 2rem;
+    }
+    @media(max-width:860px){
+      .page-content{grid-template-columns:1fr;padding:1rem;}
+      .topbar{padding:0.875rem 1rem;}
+      body.in-iframe .page-content {
+        padding: 0.75rem 0.5rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -260,6 +273,9 @@
 </div>
 
 <script>
+  if (window.self !== window.top) {
+    document.body.classList.add('in-iframe');
+  }
   const WS_URL = (window.location.protocol === 'https:' ? 'wss://' : 'ws://') + window.location.host + '/voice/ws';
   let ws=null,connected=false,muted=false,recording=false,mediaRecorder=null,audioStream=null,chunks=[],msgCount=0;
   const statusPill=document.getElementById('statusPill'),statusText=document.getElementById('statusText'),stateLabel=document.getElementById('stateLabel');
